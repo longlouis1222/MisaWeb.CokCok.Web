@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="../../lib/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/main.css">
+  <title>Quản lý khách hàng - CUKCUK.VN</title>
+</head>
+
+<body>
+  <div class="panel-left">
+    <div class="logo">
+      <div class="expend-icon"></div>
+      <div class="logo-page"></div>
+    </div>
+    <div class="menu">
+      <div class="menu__item">
+        <div class="menu__item--icon icon-dashboard">
+
+        </div>
+        <div class="menu__item--text">
+          Tổng quan
+        </div>
+      </div>
+      <!-- End 1 block -->
+      <div class="menu__item">
+        <div class="menu__item--icon icon-report">
+
+        </div>
+        <div class="menu__item--text">
+          Báo cáo
+        </div>
+      </div>
+      <!-- End 1 block -->
+      <div class="menu__item">
+        <div class="menu__item--icon icon-dashboard">
+
+        </div>
+        <div class="menu__item--text">
+          Mua hàng
+        </div>
+      </div>
+      <!-- End 1 block -->
+      <div class="menu__item">
+        <div class="menu__item--icon icon-dic-employee">
+
+        </div>
+        <div class="menu__item--text">
+          Danh mục khách hàng
+        </div>
+      </div>
+      <!-- End 1 block -->
+      <div class="menu__item">
+        <div class="menu__item--icon icon-dic-employee">
+
+        </div>
+        <div class="menu__item--text">
+          Danh mục Khách hàng
+        </div>
+      </div>
+      <!-- End 1 block -->
+      <div class="menu__item">
+        <div class="menu__item--icon icon-setting">
+
+        </div>
+        <div class="menu__item--text">
+          Thiết lập hệ thống
+        </div>
+      </div>
+      <!-- End 1 block -->
+    </div>
+  </div>
+  <div class="panel-right">
+    <!--header-->
+    <div class="header">
+      <div class="department-info">
+        <select>
+          <option>Nhà hàng Biển Đông</option>
+          <option>Nhà hàng Hải Dương</option>
+          <option>Nhà hàng Đội Cấn</option>
+          <option>Nhà hàng Cầu Giâý</option>
+        </select>
+      </div>
+      <div class="account-info">
+        <div class="account-avatar"></div>
+        <div class="account-name">Nguyễn Huy Long</div>
+        <div class="account-option icon-option-default"></div>
+      </div>
+    </div>
+    <!--content-->
+    <div class="content">
+      <div class="header-content">
+        <div class="title">Danh sách nhân viên</div>
+        <div class="content-feature">
+          <button class="m-btn m-btn-default">
+            <div class="icon-add"></div>
+            <div class="btn-text">Thêm nhân viên</div>
+          </button>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <div class="filter-left">
+          <div class="icon-search"></div>
+          <input type="text" placeholder="Tìm kiếm theo Mã, Tên nhân viên">
+        </div>
+        <div class="filter-right"></div>
+      </div>
+      <div class="grid"></div>
+      <div class="paging-bar"></div>
+    </div>
+  </div>
+  <div class="dialog">
+    <div class="modal__opacity">
+
+    </div>
+    <div class="dialog__content">
+      <div class="dialog__header">
+        <div class="icon-exit"></div>
+        <div class="title">Thông tin khách hàng</div>
+      </div>
+      <div class="filter-info-top">
+        <div class="filter-avt">
+          <div class="default-avt"></div>
+          <p>vui lòng chọn ảnh có địng dạng .jpg, .jpeg, .png, .gif</p>
+        </div>
+        <form class="form-top">
+          <div class="info-top">
+            <label for="cus-id">
+              <p class="label-text">Mã khách hàng(<span class="required">*</span>)</p>
+              <input type="text" id="cus-id" required>
+            </label>
+            <label for="cus-id-card">
+              <p class="label-text">Mã thẻ thành viên</p>
+              <input type="text" id="cus-id-card">
+            </label>
+            <label for="cus-birth">
+              <p class="label-text">Ngày sinh</p>
+              <input type="text" id="cus-birth" placeholder="mm/dd/yyyy">
+              <div class="icon-calendar"></div>
+            </label>
+          </div>
+          <!-- end 1 el -->
+          <div class="info-top">
+            <label for="cus-name">
+              <p class="label-text">Họ và tên(<span class="required">*</span>)</p>
+              <input type="text" id="cus-name" required>
+            </label>
+            <label for="cus-id-card">
+              <p class="label-text">Nhóm khách hàng</p>
+              <select class="cus-id-card">
+                <option>Khách VIP</option>
+                <option>Khách thường</option>
+              </select>
+            </label>
+            <label class="cus-gender">
+              <p class="label-text">Giới tính</p>
+              <ul class="radio-gender">
+                <li>
+                  <label for="male" class="radio">
+                    <input type="radio" name="gender" id="male" class="radio__input">
+                    <div class="check check1"></div>
+                    Nam
+                  </label>
+                </li>
+                <li>
+                  <label for="female" class="radio">
+                    <input type="radio" name="gender" id="female" class="radio__input">
+                    <div class="check check2"></div>
+                    Nu
+                  </label>
+                </li>
+              </ul>
+            </label>
+          </div>
+          <!-- end 1 el -->
+        </form>
+      </div>
+      <!-- end 1 el -->
+      <div class="filter-info-bottom">
+        <form class="form-bottom">
+          <div class="info-bottom">
+            <div class="info-bottom-left">
+              <label for="cus-email">
+                <p class="label-text">Email</p>
+                <input type="email" id="cus-email">
+              </label>
+              <label for="cus-company">
+                <p class="label-text">Tên công ty</p>
+                <input type="text" id="cus-company">
+              </label>
+            </div>
+            <!-- end 1 el -->
+            <div class="info-bottom-right">
+              <label for="cus-phone">
+                <p class="label-text">Số điện thoại(<span class="required">*</span>)</p>
+                <input type="text" id="cus-phone" required>
+              </label>
+              <label for="cus-tax">
+                <p class="label-text">Mã số thuế</p>
+                <input type="text" id="cus-tax">
+              </label>
+            </div>
+          </div>
+          <!-- end 1 el -->
+          <div class="info-bottom">
+            <div class="info-bottom-below">
+              <label for="cus-address">
+                <p class="label-text">Địa chỉ</p>
+                <input type="text" id="cus-address">
+              </label>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="dialog-btn">
+        <button class="m-btn cancel-btn">Hủy</button>
+        <button class="m-btn save-btn"><i class="fa fa-floppy-o" aria-hidden="true"></i>Lưu</button>
+        <button class="m-btn saveAndAdd-btn">Lưu và thêm mới</button>
+      </div>
+    </div>
+  </div>
+  <script src="../lib/jquery-3.5.1.min.js"></script>
+  <script src="../lib/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+  <script src="../css/page/customer.js"></script>
+</body>
+
+</html>

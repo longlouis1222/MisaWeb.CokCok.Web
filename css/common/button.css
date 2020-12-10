@@ -1,0 +1,21 @@
+.m-btn {
+  background-color: #019160;
+  border-radius: 4px;
+  height: 40px;
+  font-size: 13px;
+  color: #fff;
+  font-family: 'GoogleSans-Regular';
+  padding: 0 16px;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+}
+.m-btn:hover {
+  background-color: #2fbe8e;
+}
+.m-btn .btn-text {
+  margin-left: 8px;
+}

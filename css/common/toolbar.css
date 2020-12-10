@@ -1,0 +1,31 @@
+.filter-bar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 40px;
+}
+
+.filter-bar .filter-left {
+  position: absolute;
+  left: 16px;
+}
+.filter-bar .filter-left .icon-search {
+  position: absolute;
+  top: 10px;
+  left: 16px;
+  width: 16px;
+  height: 16px;
+  background-image: url('../../content/icon/search.png');
+}
+.filter-bar .filter-right {
+  position: absolute;
+  right: 16px;
+}
+.filter-bar input[type="text"] {
+  padding: 10px 10px 10px 38px;
+  border: 1px solid #dbdeff;
+  border-radius: 4px;
+  outline-color: #01b075;
+  font-size: 12px;
+}
+
