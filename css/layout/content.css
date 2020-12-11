@@ -4,33 +4,31 @@
   width: calc(100% - 1px);
   height: calc(100% - 61px);
   background-color: #fff;
+  padding: 16px 16px 0 16px;
   /* position: absolute;
     top: 61px;
     left: 1px;
     width: calc(100% - 1px);
     height: calc(100vh - 61px); */
 }
+
 .content .header-content {
-  padding: 16px;
+  padding: 8px 0 8px 0;
   font-size: 20px;
   font-weight: bold;
   display: flex;
   justify-content: space-between;
 }
+
 .content .header-content .content-feature .icon-add {
   width: 16px;
   height: 16px;
   background-image: url('../../content/icon/add.png');
 }
-.content .header-content .content-feature .icon-add {
 
-}
-.content .filter-bar {
 
-}
-.content .grid {
+/* Paging */
 
-}
 .content .paging-bar {
-
+  height: 56px;
 }

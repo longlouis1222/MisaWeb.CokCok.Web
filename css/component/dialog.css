@@ -38,6 +38,7 @@
   font-weight: bold;
   text-transform: uppercase;
 }
+
 .dialog__content .icon-exit {
   position: absolute;
   top: 12px;
@@ -57,7 +58,6 @@
 
 .dialog__content .filter-info-top .filter-avt {
   width: 100%;
-  
 }
 
 .dialog__content .filter-info-top .filter-avt .default-avt {
@@ -89,7 +89,7 @@
   margin-right: 10px;
 }
 
-.dialog__content .form-top .info-top > label {
+.dialog__content .form-top .info-top>label {
   display: block;
   margin-bottom: 16px;
 }
@@ -100,28 +100,16 @@
 
 .dialog__content .form-top input[type="text"] {
   width: 200px;
-  height: 40px;
-  padding: 0 16px;
-  border: 1px solid #bbb;
-  border-radius: 4px;
-  outline-color: #01b075;
   font-size: 12px;
 }
 
 .dialog__content .form-top select {
-  height: 40px;
-  width: 200px;
-  border: 1px solid #bbb;
-  border-radius: 4px;
-  outline: none;
   font-size: 16px;
   cursor: pointer;
-  padding-left: 16px;
 }
 
-.dialog__content .form-top input[type="radio"] {
+.dialog__content .form-top input[type="radio"] {}
 
-}
 .dialog__content .form-top .info-top .radio-gender {
   display: inline-flex;
   margin-top: 15px;
@@ -147,12 +135,12 @@ ul li {
   justify-content: space-between;
 }
 
-.form-bottom .info-bottom .info-bottom-left > label {
+.form-bottom .info-bottom .info-bottom-left>label {
   display: block;
   margin-bottom: 16px;
 }
 
-.form-bottom .info-bottom .info-bottom-right > label {
+.form-bottom .info-bottom .info-bottom-right>label {
   display: block;
   margin-bottom: 16px;
 }
@@ -160,32 +148,17 @@ ul li {
 .form-bottom .info-bottom .info-bottom-left input[type="text"],
 input[type="email"] {
   width: 430px;
-  height: 40px;
-  padding: 0 16px;
-  border: 1px solid #bbb;
-  border-radius: 4px;
-  outline-color: #01b075;
-  font-size: 12px; 
+  font-size: 12px;
 }
 
 .form-bottom .info-bottom .info-bottom-right input[type="text"] {
   width: 200px;
-  height: 40px;
-  padding: 0 16px;
-  border: 1px solid #bbb;
-  border-radius: 4px;
-  outline-color: #01b075;
-  font-size: 12px; 
+  font-size: 12px;
 }
 
 .form-bottom .info-bottom .info-bottom-below input[type="text"] {
   width: 640px;
-  height: 40px;
-  padding: 0 16px;
-  border: 1px solid #bbb;
-  border-radius: 4px;
-  outline-color: #01b075;
-  font-size: 12px; 
+  font-size: 12px;
 }
 
 .dialog__content .dialog-btn {
@@ -200,6 +173,10 @@ input[type="email"] {
   border-bottom-right-radius: 4px;
 }
 
-.dialog__content .dialog-btn > button {
+.dialog__content .dialog-btn>button {
   margin-left: 16px;
+}
+
+.dialog__content .dialog-btn .m-btn i {
+  margin-right: 5px;
 }

@@ -1,0 +1,22 @@
+input,
+select {
+  padding: 10px 16px;
+  border-radius: 4px;
+  outline: none;
+  border: 1px solid #bbbbbb;
+  width: 100%;
+  height: 40px;
+}
+
+input:focus,
+select:focus {
+  border-color: #019160;
+}
+
+input::placeholder {
+  font-size: 11px;
+}
+
+.input-search {
+  padding-left: 40px;
+}
