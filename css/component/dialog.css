@@ -1,6 +1,6 @@
 .dialog__content {
   width: 100%;
-  display: none;
+  /* display: none; */
 }
 
 .dialog__header {
@@ -15,13 +15,13 @@
   bottom: 0;
   background-color: black;
   opacity: 0.5;
-  display: none;
+  /* display: none; */
 }
 
 .dialog .dialog__content {
   position: fixed;
   width: 680px;
-  height: 600px;
+  height: 595px;
   background-color: #fff;
   border-radius: 4px;
   top: calc(50% - 300px);
@@ -124,6 +124,10 @@
 
 ul li {
   list-style: none;
+}
+
+.dialog__content .filter-info-bottom {
+  margin-top: -25px;
 }
 
 .dialog__content .form-bottom {

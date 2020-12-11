@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="../lib/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link href="../../lib/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet" />
   <link rel="stylesheet" href="../css/main.css">
   <title>Quản lý khách hàng - CUKCUK.VN</title>
 </head>
@@ -95,7 +95,7 @@
       <div class="header-content">
         <div class="title">Danh sách khách hàng</div>
         <div class="content-feature">
-          <button class="m-btn m-btn-default">
+          <button id="btnAdd" class="m-btn m-btn-default">
             <div class="icon-add"></div>
             <div class="btn-text">Thêm nhân viên</div>
           </button>
@@ -198,31 +198,31 @@
                 <div class="cell">KH0441943</div>
               </td>
               <td rowspan="1" colspan="1" style="width: 143px;">
-                <div class="cell">Bùi Khánh Loan</div>
+                <div class="cell">Nguyễn Huy Long</div>
               </td>
               <td rowspan="1" colspan="1" style="width: 58px;">
                 <div class="cell"></div>
               </td>
               <td rowspan="1" colspan="1" style="width: 100px;">
-                <div class="cell text-align-center">15/03/1965</div>
+                <div class="cell text-align-center">12/02/2000</div>
               </td>
               <td rowspan="1" colspan="1" style="width: 72px;">
                 <div class="cell"></div>
               </td>
               <td rowspan="1" colspan="1" style="width: 119px;">
-                <div class="cell">094413864334</div>
+                <div class="cell">0945449964</div>
               </td>
               <td rowspan="1" colspan="1" style="width: 192px;">
-                <div class="cell">huonghoan@misa.com</div>
+                <div class="cell">longlouis1222@gmail.com</div>
               </td>
               <td rowspan="1" colspan="1" style="width: 232px;">
-                <div class="cell">970 Riddle Hill Pkwy, Comcast Building, Albany, New York, 12229</div>
+                <div class="cell">Phú Lãm, Hà Đông, Hà Nội</div>
               </td>
               <td rowspan="1" colspan="1" class="text-align-right" style="width: 55px;">
                 <div class="cell"></div>
               </td>
               <td rowspan="1" colspan="1" style="width: 98px;">
-                <div class="cell">206225549</div>
+                <div class="cell">22222222</div>
               </td>
               <td rowspan="1" colspan="1" style="width: 32px;">
                 <div class="cell"></div>
@@ -233,7 +233,7 @@
                 <div class="cell">KH79169</div>
               </td>
               <td rowspan="1" colspan="1">
-                <div class="cell">Nguyễn Thị Ánh</div>
+                <div class="cell">Nguyễn Thị An</div>
               </td>
               <td rowspan="1" colspan="1">
                 <div class="cell"></div>
@@ -703,7 +703,7 @@
         </form>
       </div>
       <div class="dialog-btn">
-        <button class="m-btn cancel-btn">Hủy</button>
+        <button class="m-btn cancel-btn" id="btnCancel">Hủy</button>
         <button class="m-btn save-btn"><i class="fa fa-floppy-o" aria-hidden="true"></i>Lưu</button>
         <button class="m-btn saveAndAdd-btn">Lưu và thêm mới</button>
       </div>
@@ -711,7 +711,7 @@
   </div>
   <script src="../lib/jquery-3.5.1.min.js"></script>
   <script src="../lib/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
-  <script src="../css/page/customer.js"></script>
+  <script src="../js/page/customer.js"></script>
 </body>
 
 </html>
