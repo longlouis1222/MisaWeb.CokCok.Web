@@ -1,9 +1,9 @@
 $(document).ready(function() {
 
-    dialog = $(".dialog").dialog({
+    dialog = $(".dialog__content").dialog({
         autoOpen: false,
         width: 680,
-        height: 595,
+        // height: 590,
         modal: true,
     });
 
@@ -20,13 +20,13 @@ $(document).ready(function() {
 function loadData() {
     // load dữ liệu:
     // 1. Bước 1: gọi service lấy dữ liệu: (api.manhnv.net/api/customes)
-    debugger;
+    //debugger;
     $.ajax({
         url: 'http://api.manhnv.net/api/customers',
         method: 'GET',
     }).done(function(response) {
         console.log(response);
-        debugger;
+        //    debugger;
         // 2. Bước 2: xử lý dữ liệu
 
         // 3. Bước 3: Build html và append lên UI:

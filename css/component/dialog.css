@@ -5,6 +5,7 @@
 
 .dialog__header {
   padding: 20px 20px 0 20px;
+  display: none;
 }
 
 .dialog .modal__opacity {
@@ -15,7 +16,7 @@
   bottom: 0;
   background-color: black;
   opacity: 0.5;
-  /* display: none; */
+  display: none;
 }
 
 .dialog .dialog__content {
@@ -40,7 +41,7 @@
 }
 
 .dialog__content .icon-exit {
-  position: absolute;
+  /* position: absolute;
   top: 12px;
   right: 12px;
   width: 24px;
@@ -49,7 +50,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
-  cursor: pointer;
+  cursor: pointer; */
 }
 
 .dialog__content .icon-exit:hover {
