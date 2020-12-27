@@ -2,6 +2,7 @@
   width: 100%;
   /* padding: 20px; */
 }
+
 .menu .menu__item {
   display: flex;
   align-items: center;
@@ -10,9 +11,15 @@
   padding-left: 20px;
   cursor: pointer;
 }
+
 .menu .menu__item:hover {
   background-color: #e5e5e5;
 }
+
+.menu .menu__item:active {
+  background-color: aqua;
+}
+
 .menu .menu__item .menu__item--icon {
   width: 24px;
   height: 24px;
@@ -21,18 +28,23 @@
   background-repeat: no-repeat;
   background-size: contain;
 }
+
 .menu .menu__item .menu__item--text {
   margin-left: 10px;
 }
+
 .menu .menu__item .icon-dashboard {
   background-image: url(../../content/icon/dashboard.png);
 }
+
 .menu .menu__item .icon-report {
   background-image: url(../../content/icon/report.png);
 }
+
 .menu .menu__item .icon-dic-employee {
   background-image: url(../../content/icon/dic-employee.png);
 }
+
 .menu .menu__item .icon-setting {
   background-image: url(../../content/icon/setting.png);
 }

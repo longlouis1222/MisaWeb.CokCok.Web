@@ -46,17 +46,17 @@
 }
 
 .grid table th {
-  /*z-index:1;
-    position:sticky;
-    background-color: #ffffff;
-    top:0px;
-    left:0;
-    padding-top: 22px !important;*/
+  z-index: 1;
+  position: sticky;
+  background-color: #ffffff;
+  top: 0;
+  left: 0;
+  /* padding-top: 22px !important; */
   font-weight: bold !important;
 }
 
 .grid tbody tr:nth-child(2n+1) {
-  background-color: #fafafa;
+  background-color: #f4f4f4;
 }
 
 .grid tbody tr:hover {

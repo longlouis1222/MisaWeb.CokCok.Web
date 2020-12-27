@@ -69,6 +69,7 @@
   background-image: url('../../content/img/default-avatar.jpg');
   background-size: contain;
   margin: 0 auto;
+  cursor: pointer;
 }
 
 .dialog__content .filter-info-top .filter-avt p {
@@ -120,7 +121,11 @@
 }
 
 .dialog__content .form-top .cus-gender ul li:first-child {
-  padding: 0 30px 0 5px;
+  padding: 0 16px 0 5px;
+}
+
+.dialog__content .form-top .cus-gender ul li:nth-child(2) {
+  padding-right: 16px;
 }
 
 ul li {

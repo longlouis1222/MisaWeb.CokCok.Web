@@ -1,12 +1,15 @@
 @import url('layout/content.css');
 @import url('layout/header.css');
 @import url('layout/menu.css');
+@import url('page/employee.css');
 @import url('component/dialog.css');
 @import url('common/button.css');
 @import url('common/toolbar.css');
 @import url('common/radioBtn.css');
 @import url('common/icon.css');
 @import url('common/input.css');
+@import url('common/common.css');
+@import url('common/element.css');
 
 /* @import url('common/grid-test.css'); */
 

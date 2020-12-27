@@ -7,7 +7,7 @@
   <link href="../lib/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="../css/main.css">
-  <title>Quản lý khách hàng - CUKCUK.VN</title>
+  <title>Quản lý nhân viên - CUKCUK.VN</title>
 </head>
 
 <body>
@@ -49,7 +49,7 @@
 
         </div>
         <div class="menu__item--text">
-          Danh mục Nhân viên
+          <a href="employee.html">Danh mục nhân viên</a>
         </div>
       </div>
       <!-- End 1 block -->
@@ -58,7 +58,7 @@
 
         </div>
         <div class="menu__item--text">
-          <a href="customer.html">Danh mục Khách hàng</a>
+          <a href="customer.html">Danh mục khách hàng</a>
         </div>
       </div>
       <!-- End 1 block -->
@@ -93,7 +93,7 @@
     <!--content-->
     <div class="content">
       <div class="header-content">
-        <div class="title">Danh sách khách hàng</div>
+        <div class="title">Danh sách nhân viên</div>
         <div class="content-feature">
           <button id="btnAdd" class="m-btn m-btn-default">
             <div class="icon-add"></div>
@@ -104,87 +104,32 @@
       <div class="filter-bar">
         <div class="filter-left">
           <input type="text" class="icon-search input-search" placeholder="Tìm kiếm theo Mã, Tên nhân viên">
+          <select id="cbxDepartment" fieldName="CustomerGroupName" fieldValue="CustomerGroupId" api="/api/customergroups" class="m-control">
+            <option value="19165ed7-212e-21c4-0428-030d4265475f">Tất cả phòng ban</option>
+            <option value="19165ed7-212e-21c4-0428-030d4265475f">Văn phòng Tổng công ty</option>
+            <option value="7a0b757e-41eb-4df6-c6f8-494a84b910f4">Phong đào tạo công nghệ</option>
+            <option value="3631011e-4559-4ad8-b0ad-cb989f2177da">Phòng Nhân sự</option>
+          </select>
+          <select id="cbxPosition" fieldName="CustomerGroupName" fieldValue="CustomerGroupId" api="/api/customergroups" class="m-control">
+            <option value="19165ed7-212e-21c4-0428-030d4265475f">Tất cả vị trí</option>
+            <option value="19165ed7-212e-21c4-0428-030d4265475f">Giám đốc</option>
+            <option value="7a0b757e-41eb-4df6-c6f8-494a84b910f4">Trưởng phòng</option>
+            <option value="3631011e-4559-4ad8-b0ad-cb989f2177da">Nhân viên</option>
+          </select>
         </div>
         <div class="filter-right">
           <button id="btnRefresh" class="m-second-button m-btn-refresh"></button>
         </div>
       </div>
-      <div class="grid grid-customer el-table el-table--fit el-table--scrollable-y el-table--enable-row-hover el-table--enable-row-transition">
-        <!-- <div class="el-table__header-wrapper">
-          <div class="hidden-columns">
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-          <table cellspacing="0" cellpadding="0" border="0" class="el-table__header" style="min-width: 100%;">
-            <colgroup>
-              <col>
-              <col width="400">
-              <col width="350">
-              <col width="300">
-              <col width="300">
-              <col width="200">
-              <col width="200">
-              <col width="200">
-              <col width="500">
-              <col width="300">
-              <col name="gutter" width="6">
-            </colgroup>
-            <thead class="has-gutter">
-              <tr class="el-table__row">
-                <th colspan="1" rowspan="1" class="el-table_30_column_114 is-leaf" fieldName="CustomerCode">
-                  <div class="cell">Mã khách hàng</div>
-                </th>
-                <th colspan="1" rowspan="1" class="el-table_30_column_115 is-leaf" fieldName="FullName">
-                  <div class="cell">Họ và tên</div>
-                </th>
-                <th colspan="1" rowspan="1" class="el-table_30_column_116 is-leaf" fieldName="GenderName">
-                  <div class="cell">Giới tính</div>
-                </th>
-                <th colspan="1" rowspan="1" class="el-table_30_column_116 is-leaf" fieldName="DateOfBirth" formatType="ddmmyyyy" style="text-align:center">
-                  <div class="cell">Ngày sinh</div>
-                </th>
-                <th colspan="1" rowspan="1" class="el-table_30_column_116 is-leaf" fieldName="CustomerGroupName">
-                  <div class="cell">Nhóm khách hàng</div>
-                </th>
-                <th colspan="1" rowspan="1" class="el-table_30_column_116 is-leaf" fieldName="PhoneNumber">
-                  <div class="cell">Điện thoại</div>
-                </th>
-                <th colspan="1" rowspan="1" class="el-table_30_column_116 is-leaf" fieldName="Email">
-                  <div class="cell">Email</div>
-                </th>
-                <th colspan="1" rowspan="1" class="el-table_30_column_116 is-leaf" fieldName="Address">
-                  <div class="cell">Địa chỉ</div>
-                </th>
-                <th colspan="1" rowspan="1" class="el-table_30_column_116 is-leaf" fieldName="DebitAmount" formatType="Money">
-                  <div class="cell">Số tiền nợ</div>
-                </th>
-                <th colspan="1" rowspan="1" class="el-table_30_column_116 is-leaf" fieldName="MemberCardCode">
-                  <div class="cell">Mã thẻ thành viên</div>
-                </th>
-                <th class="gutter" style="width: 6px;"></th>
-              </tr>
-            </thead>
-          </table>
-        </div> -->
+      <div class="grid grid-customer">
+
         <div class="el-table__body-wrapper is-scrolling-none el-table__body_custom">
           <table id="tbListData" cellspacing="0" cellpadding="0" border="0" class="el-table__body" style="min-width: 100%;">
-            <!-- <colgroup>
-            <col>
-            <col width="400">
-            <col width="350">
-            <col width="300">
-            <col width="300">
-            <col width="200">
-            <col width="200">
-            <col width="200">
-            <col width="500">
-            <col width="300">
-          </colgroup> -->
+
             <thead class="has-gutter">
               <tr class="el-table__row">
-                <th colspan="1" rowspan="1" fieldName="CustomerCode">
-                  <div class="cell w-130">Mã khách hàng</div>
+                <th colspan="1" rowspan="1" fieldName="EmployeeCode">
+                  <div class="cell" style="width: 130px;">Mã nhân viên</div>
                 </th>
                 <th colspan="1" rowspan="1" fieldName="FullName">
                   <div class="cell">Họ và tên</div>
@@ -195,23 +140,23 @@
                 <th colspan="1" rowspan="1" fieldName="DateOfBirth" formatType="ddmmyyyy" style="text-align:center">
                   <div class="cell">Ngày sinh</div>
                 </th>
-                <th colspan="1" rowspan="1" fieldName="CustomerGroupName">
-                  <div class="cell">Nhóm khách hàng</div>
-                </th>
                 <th colspan="1" rowspan="1" fieldName="PhoneNumber">
                   <div class="cell">Điện thoại</div>
                 </th>
                 <th colspan="1" rowspan="1" fieldName="Email">
                   <div class="cell">Email</div>
                 </th>
-                <th colspan="1" rowspan="1" fieldName="Address">
-                  <div class="cell">Địa chỉ</div>
+                <th colspan="1" rowspan="1" fieldName="PositionName">
+                  <div class="cell">Chức vụ</div>
                 </th>
-                <th colspan="1" rowspan="1" fieldName="DebitAmount" formatType="Money">
-                  <div class="cell w-140">Số tiền nợ</div>
+                <th colspan="1" rowspan="1" fieldName="DepartmentName">
+                  <div class="cell">Phòng ban</div>
                 </th>
-                <th colspan="1" rowspan="1" fieldName="MemberCardCode">
-                  <div class="cell w-140">Mã thẻ thành viên</div>
+                <th colspan="1" rowspan="1" fieldName="Salary" formatType="Money">
+                  <div class="cell w-140">Mức lương cơ bản</div>
+                </th>
+                <th colspan="1" rowspan="1" fieldName="WorkStatusName">
+                  <div class="cell w-170">Tình trạng công việc</div>
                 </th>
                 <th class="gutter" style="width: 6px;"></th>
               </tr>
@@ -219,19 +164,16 @@
             <tbody>
               <tr class="el-table__row first">
                 <td rowspan="1" colspan="1" style="width: 100px;">
-                  <div class="cell">KH0441943</div>
+                  <div class="cell">NV-0441943</div>
                 </td>
                 <td rowspan="1" colspan="1" style="width: 143px;">
                   <div class="cell">Nguyễn Huy Long</div>
                 </td>
                 <td rowspan="1" colspan="1" style="width: 58px;">
-                  <div class="cell"></div>
+                  <div class="cell">Nam</div>
                 </td>
                 <td rowspan="1" colspan="1" style="width: 100px;">
                   <div class="cell text-align-center">12/02/2000</div>
-                </td>
-                <td rowspan="1" colspan="1" style="width: 72px;">
-                  <div class="cell"></div>
                 </td>
                 <td rowspan="1" colspan="1" style="width: 119px;">
                   <div class="cell">0945449964</div>
@@ -239,14 +181,17 @@
                 <td rowspan="1" colspan="1" style="width: 192px;">
                   <div class="cell">longlouis1222@gmail.com</div>
                 </td>
-                <td rowspan="1" colspan="1" style="width: 232px;">
-                  <div class="cell">Phú Lãm, Hà Đông, Hà Nội</div>
+                <td rowspan="1" colspan="1" style="width: 72px;">
+                  <div class="cell">Fresher</div>
                 </td>
                 <td rowspan="1" colspan="1" class="text-align-right" style="width: 55px;">
-                  <div class="cell"></div>
+                  <div class="cell">Công nghệ</div>
+                </td>
+                <td rowspan="1" colspan="1" style="width: 232px;">
+                  <div class="cell text-align-right">9.000.000</div>
                 </td>
                 <td rowspan="1" colspan="1" style="width: 98px;">
-                  <div class="cell">22222222</div>
+                  <div class="cell">Đang thử việc</div>
                 </td>
                 <td rowspan="1" colspan="1" style="width: 32px;">
                   <div class="cell"></div>

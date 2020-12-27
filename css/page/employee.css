@@ -1,0 +1,8 @@
+.filter-left {
+  display: flex;
+}
+
+.filter-left select {
+  margin-left: 10px;
+  margin-right: 10px;
+}
