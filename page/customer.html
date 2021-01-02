@@ -49,7 +49,7 @@
 
         </div>
         <div class="menu__item--text">
-          Danh mục Nhân viên
+          <a href="employee.html">Danh mục nhân viên</a>
         </div>
       </div>
       <!-- End 1 block -->
@@ -97,7 +97,7 @@
         <div class="content-feature">
           <button id="btnAdd" class="m-btn m-btn-default">
             <div class="icon-add"></div>
-            <div class="btn-text">Thêm nhân viên</div>
+            <div class="btn-text">Thêm khách hàng</div>
           </button>
         </div>
       </div>
@@ -637,13 +637,13 @@
         </div>
         <form class="form-top">
           <div class="info-top">
-            <label for="cus-id">
+            <label for="cus-code">
               <p class="label-text">Mã khách hàng(<span class="required">*</span>)</p>
-              <input type="text" id="cus-id" required>
+              <input type="text" id="cus-code" required>
             </label>
-            <label for="cus-id-card">
+            <label for="cus-code-card">
               <p class="label-text">Mã thẻ thành viên</p>
-              <input type="text" id="cus-id-card">
+              <input type="text" id="cus-code-card">
             </label>
             <label for="cus-birth">
               <p class="label-text">Ngày sinh</p>
@@ -656,33 +656,35 @@
               <p class="label-text">Họ và tên(<span class="required">*</span>)</p>
               <input type="text" id="cus-name" required>
             </label>
-            <label for="cus-id-card">
+            <label for="cus-group">
               <p class="label-text">Nhóm khách hàng</p>
-              <select class="cus-id-card">
-                <option>Khách VIP</option>
-                <option>Khách thường</option>
+              <select id="cus-group" api="/api/customergroups">
+                <option value="19165ed7-212e-21c4-0428-030d4265475f">Khách VIP</option>
+                <option value="7a0b757e-41eb-4df6-c6f8-494a84b910f4">Khách thường</option>
+                <option value="3631011e-4559-4ad8-b0ad-cb989f2177da">Khách vãng lai</option>
               </select>
             </label>
-            <label class="cus-gender">
+            <label for="cus-gender" class="cus-gender">
               <p class="label-text">Giới tính</p>
-              <ul class="radio-gender">
+              <ul class="radio-gender" id="cus-gender" dataIndex="Gender" fieldValue="value" fieldText="text"
+                apiGetUrl="/api/v1/enums/gender">
                 <li>
                   <label for="male" class="radio">
-                    <input type="radio" name="gender" id="male" class="radio__input">
+                    <input type="radio" name="gender" id="male" class="radio__input" value="1" checked>
                     <div class="check check1"></div>
                     Nam
                   </label>
             </li>
             <li>
               <label for="female" class="radio">
-                    <input type="radio" name="gender" id="female" class="radio__input">
+                    <input type="radio" name="gender" id="female" class="radio__input" value="0">
                     <div class="check check2"></div>
-                    Nu
+                    Nữ
                   </label>
             </li>
             <li>
               <label for="other" class="radio">
-                    <input type="radio" name="gender" id="other" class="radio__input">
+                    <input type="radio" name="gender" id="other" class="radio__input" value="2">
                     <div class="check check3"></div>
                     Khác
                   </label>
@@ -711,7 +713,7 @@
             <div class="info-bottom-right">
               <label for="cus-phone">
                 <p class="label-text">Số điện thoại(<span class="required">*</span>)</p>
-                <input type="text" id="cus-phone" required>
+                <input type="tel" id="cus-phone" required>
               </label>
               <label for="cus-tax">
                 <p class="label-text">Mã số thuế</p>
@@ -732,8 +734,7 @@
       </div>
       <div class="dialog-btn">
         <button class="m-btn cancel-btn" id="btnCancel">Hủy</button>
-        <button class="m-btn save-btn"><i class="fa fa-floppy-o" aria-hidden="true"></i>Lưu</button>
-        <button class="m-btn saveAndAdd-btn">Lưu và thêm mới</button>
+        <button class="m-btn save-btn" id="btnSave"><i class="fa fa-floppy-o" aria-hidden="true"></i>Lưu</button>
       </div>
     </div>
   </div>

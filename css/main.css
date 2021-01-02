@@ -3,6 +3,7 @@
 @import url('layout/menu.css');
 @import url('page/employee.css');
 @import url('component/dialog.css');
+@import url('component/dialogEmployee.css');
 @import url('common/button.css');
 @import url('common/toolbar.css');
 @import url('common/radioBtn.css');

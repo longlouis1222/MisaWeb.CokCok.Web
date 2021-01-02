@@ -1,0 +1,53 @@
+/*------------------ EMPLOYEE ----------------------*/
+
+.dialog__content .filter-info {
+  display: flex;
+  padding: 20px 20px 0 20px;
+}
+
+.dialog__content .filter-info .filter-avt .default-avt {
+  width: 170px;
+  height: 165px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  background-image: url('../../content/img/default-avatar.jpg');
+  background-size: contain;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+.dialog__content .filter-info .filter-avt p {
+  width: 100%;
+  text-align: center;
+}
+
+.dialog__content .filter-info .filter-avt {
+  width: 35%;
+}
+
+.filter-info-right {
+  padding-left: 16px;
+}
+
+.filter-info .m-row label:nth-child(2) {
+  margin-left: 16px;
+}
+
+.filter-info-right .m-row input {
+  width: 200px;
+}
+
+.filter-info-right .m-row select {
+  width: 200px;
+}
+
+.filter-info-right .m-row:last-child {
+  margin-bottom: 0;
+}
+
+.currency-for-input {
+  position: absolute;
+  right: 30px;
+  line-height: 40px;
+  font-style: italic;
+}

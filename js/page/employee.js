@@ -17,10 +17,10 @@ $(document).ready(function() {
 function loadData() {
     // alert(1);
     // load dữ liệu:
-    // 1. Bước 1: gọi service lấy dữ liệu: (api.manhnv.net/api/customes)
+    // 1. Bước 1: gọi service lấy dữ liệu: (api.manhnv.net/api/employees)
     //debugger;
     $.ajax({
-        url: 'http://api.manhnv.net/api/customers',
+        url: 'http://api.manhnv.net/api/employees',
         method: 'GET',
     }).done(function(res) {
         console.log(res);
@@ -30,20 +30,20 @@ function loadData() {
         // 3. Bước 3: Build html và append lên UI:
         $('#tbListData tbody').empty();
         for (var i = 0; i < res.length; i++) {
-            // console.log(res[i]);
+            console.log(res[i]);
             var DOB = formatDate(res[i].DateOfBirth);
-            // var DebitAmount = formatMoney(res[i].DebitAmount);
+            var Salary = formatMoney(res[i].Salary);
             var trHtml = $(`<tr class="el-table__row first">
-                            <td rowspan="1" colspan="1" style="width: 100px;"><div class="cell">${res[i].CustomerCode}</div></td>
+                            <td rowspan="1" colspan="1" style="width: 100px;"><div class="cell">${res[i].EmployeeCode}</div></td>
                             <td rowspan="1" colspan="1" style="width: 143px;"><div class="cell">${res[i].FullName}</div></td>
                             <td rowspan="1" colspan="1" style="width: 58px;"><div class="cell">${res[i].GenderName}</div></td>
                             <td rowspan="1" colspan="1" style="width: 100px;"><div class="cell text-align-center">${DOB}</div></td>
-                            <td rowspan="1" colspan="1" style="width: 72px;"><div class="cell">${res[i].CustomerGroupName}</div></td>
                             <td rowspan="1" colspan="1" style="width: 119px;"><div class="cell">${res[i].PhoneNumber}</div></td>
-                            <td rowspan="1" colspan="1" style="width: 192px;"><div class="cell">${res[i].Email}</div></td>
-                            <td rowspan="1" colspan="1" style="width: 232px;"><div class="cell" title="${res[i].Address}">${res[i].Address}</div></td>
-                            <td rowspan="1" colspan="1" style="width: 55px;"><div class="cell" class="text-align-right">${res[i].DebitAmount || ""}</div></td>
-                            <td rowspan="1" colspan="1" style="width: 98px;"><div class="cell">${res[i].MemberCardCode}</div></td>
+                            <td rowspan="1" colspan="1" style="width: 192px;"><div class="cell" title="${res[i].Email}">${res[i].Email}</div></td>
+                            <td rowspan="1" colspan="1" style="width: 72px;"><div class="cell">${res[i].PositionName}</div></td>
+                            <td rowspan="1" colspan="1" style="width: 232px;"><div class="cell">${res[i].DepartmentName}</div></td>
+                            <td rowspan="1" colspan="1" style="width: 55px;"><div class="cell text-align-right">${res[i].Salary || ""}</div></td>
+                            <td rowspan="1" colspan="1" style="width: 98px;"><div class="cell">${res[i].WorkStatusName}</div></td>
                             <td rowspan="1" colspan="1" style="width: 32px;"><div class="cell"></div></td>
                         </tr>`);
             $('#tbListData >tbody:last-child').append(trHtml);
@@ -88,25 +88,30 @@ function initEvens() {
             return;
         }
         // Thu thập thông tin dữ liệu đc nhập -> build thành object
-        var customer = {
-            "CustomerCode": $('#cus-code').val(),
-            "CustomerGroup": $('#cus-group').val(),
-            "FullName": $('#cus-name').val(),
-            "Gender": $('#cus-gender').find(':checked').val(),
-            "Address": $('#cus-address').val(),
-            "DateOfBirth": $('#cus-birth').val(),
-            "Email": $('#cus-email').val(),
-            "PhoneNumber": $('#cus-phone').val(),
-            "MemberCardCode": $('#cus-code-card').val(),
-            "CustomerGroupId": $('#cus-group').find(':selected').val() /* "7a0b757e-41eb-4df6-c6f8-494a84b910f4" */
+        var employee = {
+            "EmployeeCode": $('#em-code').val(),
+            "FullName": $('#em-name').val(),
+            "DateOfBirth": $('#em-birth').val(),
+            "Gender": $('#em-gender').find(':selected').val(),
+            "IdentityCardNumber": $('#em-identification').val(),
+            "IdentityDate": $('#em-identifyDate').val(),
+            "IdentityPlace": $('#em-identifyPlace').val(),
+            "Email": $('#em-email').val(),
+            "PhoneNumber": $('#em-phone').val(),
+            "PositionId": $('#cbxPosition').find(':selected').val(),
+            "DepartmentId": $('#cbxDepartment').find(':selected').val(),
+            "TaxCode": $('#em-tax').val(),
+            "Salary": $('#em-salary').val(),
+            "DateJoin": $('#em-dateJoin').val(),
+            "WorkStatus": $('#cbxWorkStatus').find(':selected').val()
         }
         console.log(customer);
         alert("success");
         // Gọi service tương ứng thực hiện dữ liệu
         $.ajax({
-            url: 'http://api.manhnv.net/api/customers',
+            url: 'http://api.manhnv.net/api/employees',
             method: 'POST',
-            data: JSON.stringify(customer),
+            data: JSON.stringify(employee),
             contentType: 'application/json'
         }).done(function(res) {
             // Sau khi lưu thành công thì: 
@@ -132,4 +137,5 @@ function initEvens() {
         // Hiển thị dialog thông tin chi tiết:
         dialog.dialog('open');
     })
+
 }

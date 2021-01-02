@@ -10,7 +10,9 @@
   outline: none;
   display: flex;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
+  min-width: 100px;
 }
 
 .m-btn:hover {
@@ -39,6 +41,15 @@
   padding-right: 24px;
   text-align: center;
   cursor: pointer;
+}
+
+.cancel-btn {
+  color: black;
+  background-color: transparent;
+}
+
+.cancel-btn:hover {
+  background-color: #bbb;
 }
 
 .m-second-button:hover {

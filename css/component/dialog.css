@@ -57,10 +57,6 @@
   background-color: #e5e5e5;
 }
 
-.dialog__content .filter-info-top .filter-avt {
-  width: 100%;
-}
-
 .dialog__content .filter-info-top .filter-avt .default-avt {
   width: 170px;
   height: 165px;
@@ -102,15 +98,13 @@
 
 .dialog__content .form-top input[type="text"] {
   width: 200px;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .dialog__content .form-top select {
   font-size: 16px;
   cursor: pointer;
 }
-
-.dialog__content .form-top input[type="radio"] {}
 
 .dialog__content .form-top .info-top .radio-gender {
   display: inline-flex;
@@ -126,10 +120,6 @@
 
 .dialog__content .form-top .cus-gender ul li:nth-child(2) {
   padding-right: 16px;
-}
-
-ul li {
-  list-style: none;
 }
 
 .dialog__content .filter-info-bottom {
@@ -158,17 +148,17 @@ ul li {
 .form-bottom .info-bottom .info-bottom-left input[type="text"],
 input[type="email"] {
   width: 430px;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .form-bottom .info-bottom .info-bottom-right input[type="text"] {
   width: 200px;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .form-bottom .info-bottom .info-bottom-below input[type="text"] {
   width: 640px;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .dialog__content .dialog-btn {
