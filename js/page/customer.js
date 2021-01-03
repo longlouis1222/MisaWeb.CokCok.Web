@@ -21,6 +21,7 @@ function loadData() {
     //debugger;
     $.ajax({
         url: 'http://api.manhnv.net/api/customers',
+        // url: 'https://localhost:44376/api/Customers',
         method: 'GET',
     }).done(function(res) {
         console.log(res);
@@ -40,7 +41,7 @@ function loadData() {
                             <td rowspan="1" colspan="1" style="width: 100px;"><div class="cell text-align-center">${DOB}</div></td>
                             <td rowspan="1" colspan="1" style="width: 72px;"><div class="cell">${res[i].CustomerGroupName}</div></td>
                             <td rowspan="1" colspan="1" style="width: 119px;"><div class="cell">${res[i].PhoneNumber}</div></td>
-                            <td rowspan="1" colspan="1" style="width: 192px;"><div class="cell">${res[i].Email}</div></td>
+                            <td rowspan="1" colspan="1" style="width: 192px;"><div class="cell">${res[i].Email || ""}</div></td>
                             <td rowspan="1" colspan="1" style="width: 232px;"><div class="cell" title="${res[i].Address}">${res[i].Address}</div></td>
                             <td rowspan="1" colspan="1" style="width: 55px;"><div class="cell" class="text-align-right">${res[i].DebitAmount || ""}</div></td>
                             <td rowspan="1" colspan="1" style="width: 98px;"><div class="cell">${res[i].MemberCardCode}</div></td>
@@ -104,7 +105,8 @@ function initEvens() {
         alert("success");
         // Gọi service tương ứng thực hiện dữ liệu
         $.ajax({
-            url: 'http://api.manhnv.net/api/customers',
+            // url: 'http://api.manhnv.net/api/customers',
+            url: 'https://localhost:44376/api/Customers',
             method: 'POST',
             data: JSON.stringify(customer),
             contentType: 'application/json'

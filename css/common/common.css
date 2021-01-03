@@ -15,6 +15,10 @@ ul li {
   list-style: none;
 }
 
+.w-82 {
+  width: 82px;
+}
+
 .w-130 {
   width: 130px;
 }

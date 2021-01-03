@@ -20,7 +20,8 @@ function loadData() {
     // 1. Bước 1: gọi service lấy dữ liệu: (api.manhnv.net/api/employees)
     //debugger;
     $.ajax({
-        url: 'http://api.manhnv.net/api/employees',
+        // url: 'http://api.manhnv.net/api/employees',
+        url: 'https://localhost:44376/api/Employees',
         method: 'GET',
     }).done(function(res) {
         console.log(res);
@@ -33,26 +34,28 @@ function loadData() {
             console.log(res[i]);
             var DOB = formatDate(res[i].DateOfBirth);
             var Salary = formatMoney(res[i].Salary);
+            var GenderName = formatGender(res[i].Gender);
+            var DepartmentName = formatDepartment(res[i].DepartmentId);
+            var PositionName = formatPosition(res[i].PositionId);
+            var WorkStatusName = formatWorkStatus(res[i].WorkStatus);
             var trHtml = $(`<tr class="el-table__row first">
                             <td rowspan="1" colspan="1" style="width: 100px;"><div class="cell">${res[i].EmployeeCode}</div></td>
                             <td rowspan="1" colspan="1" style="width: 143px;"><div class="cell">${res[i].FullName}</div></td>
-                            <td rowspan="1" colspan="1" style="width: 58px;"><div class="cell">${res[i].GenderName}</div></td>
+                            <td rowspan="1" colspan="1" style="width: 58px;"><div class="cell">${/* res[i]. */GenderName || ""}</div></td>
                             <td rowspan="1" colspan="1" style="width: 100px;"><div class="cell text-align-center">${DOB}</div></td>
                             <td rowspan="1" colspan="1" style="width: 119px;"><div class="cell">${res[i].PhoneNumber}</div></td>
                             <td rowspan="1" colspan="1" style="width: 192px;"><div class="cell" title="${res[i].Email}">${res[i].Email}</div></td>
-                            <td rowspan="1" colspan="1" style="width: 72px;"><div class="cell">${res[i].PositionName}</div></td>
-                            <td rowspan="1" colspan="1" style="width: 232px;"><div class="cell">${res[i].DepartmentName}</div></td>
-                            <td rowspan="1" colspan="1" style="width: 55px;"><div class="cell text-align-right">${res[i].Salary || ""}</div></td>
-                            <td rowspan="1" colspan="1" style="width: 98px;"><div class="cell">${res[i].WorkStatusName}</div></td>
+                            <td rowspan="1" colspan="1" style="width: 72px;"><div class="cell">${/* res[i]. */PositionName || ""}</div></td>
+                            <td rowspan="1" colspan="1" style="width: 232px;"><div class="cell">${/* res[i]. */DepartmentName || ""}</div></td>
+                            <td rowspan="1" colspan="1" style="width: 55px;"><div class="cell text-align-right">${/* res[i]. */Salary || ""}</div></td>
+                            <td rowspan="1" colspan="1" style="width: 98px;"><div class="cell">${/* res[i]. */WorkStatusName || ""}</div></td>
                             <td rowspan="1" colspan="1" style="width: 32px;"><div class="cell"></div></td>
                         </tr>`);
             $('#tbListData >tbody:last-child').append(trHtml);
         }
-
     }).fail(function(res) {
 
     })
-
 }
 
 /**
@@ -65,7 +68,6 @@ function initEvens() {
     $('#btnAdd').click(function() {
         dialog.dialog('open');
     })
-
 
     $('.icon-exit').click(function() {
         dialog.dialog('close');
@@ -98,18 +100,19 @@ function initEvens() {
             "IdentityPlace": $('#em-identifyPlace').val(),
             "Email": $('#em-email').val(),
             "PhoneNumber": $('#em-phone').val(),
-            "PositionId": $('#cbxPosition').find(':selected').val(),
-            "DepartmentId": $('#cbxDepartment').find(':selected').val(),
+            "PositionId": $('#em-position').find(':selected').val(),
+            "DepartmentId": $('#em-department').find(':selected').val(),
             "TaxCode": $('#em-tax').val(),
             "Salary": $('#em-salary').val(),
             "DateJoin": $('#em-dateJoin').val(),
             "WorkStatus": $('#cbxWorkStatus').find(':selected').val()
         }
-        console.log(customer);
-        alert("success");
+        console.log(employee);
+        // alert("success");
         // Gọi service tương ứng thực hiện dữ liệu
         $.ajax({
-            url: 'http://api.manhnv.net/api/employees',
+            // url: 'http://api.manhnv.net/api/employees',
+            url: 'https://localhost:44376/api/Employees',
             method: 'POST',
             data: JSON.stringify(employee),
             contentType: 'application/json'
@@ -137,5 +140,4 @@ function initEvens() {
         // Hiển thị dialog thông tin chi tiết:
         dialog.dialog('open');
     })
-
 }

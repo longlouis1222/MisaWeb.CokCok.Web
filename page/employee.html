@@ -104,17 +104,18 @@
       <div class="filter-bar">
         <div class="filter-left">
           <input type="text" class="icon-search input-search" placeholder="Tìm kiếm theo Mã, Tên nhân viên">
-          <select id="cbxDepartment" fieldName="CustomerGroupName" fieldValue="CustomerGroupId" api="/api/customergroups" class="m-control">
-            <option value="19165ed7-212e-21c4-0428-030d4265475f">Tất cả phòng ban</option>
-            <option value="19165ed7-212e-21c4-0428-030d4265475f">Văn phòng Tổng công ty</option>
-            <option value="7a0b757e-41eb-4df6-c6f8-494a84b910f4">Phong đào tạo công nghệ</option>
-            <option value="3631011e-4559-4ad8-b0ad-cb989f2177da">Phòng Nhân sự</option>
+          <select id="cbxDepartment" fieldName="DepartmentName" fieldValue="DepartmentId" api="https://localhost:44376/api/EmployeeDepartments" class="m-control">
+            <option>Tất cả phòng ban</option>
+            <option value="34bd2cef-5026-567c-3b71-153b37881afe">Phòng Đào tạo</option>
+            <option value="43a6bdf5-1b6b-451b-3695-2c566fa88632">Phòng Công nghệ</option>
+            <option value="64a59a25-2488-54b0-f6b4-c8af08a50cbf">Phòng Nhân sự</option>
+            <option value="674934cc-42cf-20cf-1d4a-aea48a10ed18">Phòng Marketting</option>
           </select>
-          <select id="cbxPosition" fieldName="CustomerGroupName" fieldValue="CustomerGroupId" api="/api/customergroups" class="m-control">
-            <option value="19165ed7-212e-21c4-0428-030d4265475f">Tất cả vị trí</option>
+          <select id="cbxPosition" fieldName="PositionName" fieldValue="PositionId" api="https://localhost:44376/api/EmployeePositions" class="m-control">
+            <option>Tất cả vị trí</option>
             <option value="19165ed7-212e-21c4-0428-030d4265475f">Giám đốc</option>
-            <option value="7a0b757e-41eb-4df6-c6f8-494a84b910f4">Trưởng phòng</option>
-            <option value="3631011e-4559-4ad8-b0ad-cb989f2177da">Nhân viên</option>
+            <option value="3631011e-4559-4ad8-b0ad-cb989f2177da">Trưởng phòng</option>
+            <option value="7a0b757e-41eb-4df6-c6f8-494a84b910f4">Nhân viên</option>
           </select>
         </div>
         <div class="filter-right">
@@ -135,13 +136,13 @@
                   <div class="cell">Họ và tên</div>
                 </th>
                 <th colspan="1" rowspan="1" fieldName="GenderName">
-                  <div class="cell">Giới tính</div>
+                  <div class="cell w-82">Giới tính</div>
                 </th>
                 <th colspan="1" rowspan="1" fieldName="DateOfBirth" formatType="ddmmyyyy" style="text-align:center">
                   <div class="cell">Ngày sinh</div>
                 </th>
                 <th colspan="1" rowspan="1" fieldName="PhoneNumber">
-                  <div class="cell">Điện thoại</div>
+                  <div class="cell">Số điện thoại</div>
                 </th>
                 <th colspan="1" rowspan="1" fieldName="Email">
                   <div class="cell">Email</div>
@@ -260,7 +261,8 @@
             </label>
             <label for="em-gender">
               <p class="label-text">Giới tính</p>
-              <select id="em-gender" apiGetUrl="/api/v1/enums/gender">
+              <select id="em-gender" dataIndex="Gender" fieldValue="value" fieldText="text"
+                apiGetUrl="/api/v1/enums/gender">
                 <option value="1">Nam</option>
                 <option value="0">Nữ</option>
                 <option value="2">Khác</option>
@@ -301,20 +303,23 @@
           <hr class="hr-group-label" />
 
           <div class="m-row m-flex">
-            <label for="cbxPosition">
+            <label for="em-position">
               <p class="label-text">Vị trí</p>
-              <select id="cbxPosition" fieldName="CustomerGroupName" fieldValue="CustomerGroupId"
-                api="/api/customergroups">
+              <select id="em-position" fieldName="PositionName" fieldValue="PositionId"
+                api="https://localhost:44376/api/EmployeePositions">
                 <option value="19165ed7-212e-21c4-0428-030d4265475f">Giám đốc</option>
-                <option value="19165ed7-212e-21c4-0428-030d4265475f">Nhân viên</option>
+                <option value="3631011e-4559-4ad8-b0ad-cb989f2177da">Trưởng phòng</option>
+                <option value="7a0b757e-41eb-4df6-c6f8-494a84b910f4">Nhân viên</option>
               </select>
             </label>
-            <label for="cbxDepartment">
+            <label for="em-department">
               <p class="label-text">Phòng ban</p>
-              <select id="cbxDepartment" fieldName="CustomerGroupName" fieldValue="CustomerGroupId"
-                api="/api/customergroups">
-                <option value="19165ed7-212e-21c4-0428-030d4265475f">Phòng nhân sự</option>
-                <option value="19165ed7-212e-21c4-0428-030d4265475f">Phòng đào tạo</option>
+              <select id="em-department" fieldName="DepartmentName" fieldValue="DepartmentId"
+                api="https://localhost:44376/api/EmployeeDepartments">
+                <option value="34bd2cef-5026-567c-3b71-153b37881afe">Phòng đào tạo</option>
+                <option value="43a6bdf5-1b6b-451b-3695-2c566fa88632">Phòng công nghệ</option>
+                <option value="64a59a25-2488-54b0-f6b4-c8af08a50cbf">Phòng nhân sự</option>
+                <option value="674934cc-42cf-20cf-1d4a-aea48a10ed18">Phòng Marketting</option>
               </select>
             </label>
           </div>
@@ -340,11 +345,10 @@
             </label>
             <label for="cbxWorkStatus">
               <p class="label-text">Tình trạng công việc</p>
-              <select id="cbxWorkStatus" fieldName="CustomerGroupName" fieldValue="CustomerGroupId"
-                api="/api/customergroups" class="m-control">
-                <option value="19165ed7-212e-21c4-0428-030d4265475f">Đang làm việc</option>
-                <option value="19165ed7-212e-21c4-0428-030d4265475f">Đang thử việc</option>
-                <option value="19165ed7-212e-21c4-0428-030d4265475f">Nghỉ việc</option>
+              <select id="cbxWorkStatus" class="m-control">
+                <option value="1">Đang làm việc</option>
+                <option value="2">Đang thử việc</option>
+                <option value="0">Đã nghỉ việc</option>
               </select>
             </label>
           </div>
