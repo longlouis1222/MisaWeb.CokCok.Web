@@ -5,12 +5,13 @@
   padding: 20px 20px 0 20px;
 }
 
-.dialog__content .filter-info .filter-avt .default-avt {
+.dialog__content .filter-info .filter-avt .default-avt,
+.default-avt-upload {
   width: 170px;
   height: 165px;
   border-radius: 50%;
   border: 1px solid #ccc;
-  background-image: url('../../content/img/default-avatar.jpg');
+  /* background-image: url('../../content/img/default-avatar.jpg'); */
   background-size: contain;
   margin: 0 auto;
   cursor: pointer;

@@ -180,3 +180,19 @@ input[type="email"] {
 .dialog__content .dialog-btn .m-btn i {
   margin-right: 5px;
 }
+
+.warning__content .warning-text {
+  padding: 16px;
+  text-align: center;
+}
+
+.warning__content .warning-btn {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.warning__content .warning-btn>button {
+  margin-left: 16px;
+  margin-bottom: 16px;
+}

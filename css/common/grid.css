@@ -156,3 +156,7 @@ tbody.scrollContent tr.normalRow td {
   text-overflow: ellipsis;
   word-break: break-all;
 }
+
+.row-selected {
+  background-color: rgba(150, 109, 48, 0.767) !important;
+}

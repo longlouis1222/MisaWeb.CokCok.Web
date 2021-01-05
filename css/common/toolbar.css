@@ -11,8 +11,17 @@
 }
 
 .filter-bar .filter-right {
+  display: flex;
   position: absolute;
-  right: 16px;
+  right: 0;
+}
+
+.filter-bar .filter-right>button {
+  margin-right: 10px;
+}
+
+.filter-bar .filter-right>button:last-child {
+  margin-right: 16px;
 }
 
 .filter-bar input[type="text"] {

@@ -113,7 +113,7 @@ function formatPosition(positionId) {
 function formatWorkStatus(workStatus) {
     if (workStatus == 1) {
         return "Đang làm việc";
-    } else if (workStatus == 0) {
+    } else if (workStatus == 2) {
         return "Đang thử việc";
     } else {
         return "Đã nghỉ việc";

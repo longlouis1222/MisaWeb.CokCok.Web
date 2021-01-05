@@ -5,9 +5,15 @@ $(document).ready(function() {
         // height: 590,
         modal: true,
     });
+    warning = $(".warning__content").dialog({
+        autoOpen: false,
+        width: 500,
+        modal: true
+    })
     loadData();
 
     initEvens();
+    showImagePreview();
 })
 
 /**
@@ -31,7 +37,7 @@ function loadData() {
         // 3. Bước 3: Build html và append lên UI:
         $('#tbListData tbody').empty();
         for (var i = 0; i < res.length; i++) {
-            console.log(res[i]);
+            // console.log(res[i]);
             var DOB = formatDate(res[i].DateOfBirth);
             var Salary = formatMoney(res[i].Salary);
             var GenderName = formatGender(res[i].Gender);
@@ -62,8 +68,17 @@ function loadData() {
  * Thực hiện gán các sự kiện
  * Author: NHLONG (07/12/2020)
  * */
+function theRowSelected() {
+    $(this).addClass('row-selected');
+    $(this).siblings().removeClass('row-selected');
+    Id = $(this).data('Id');
+    console.log(Id);
+}
+
+
 function initEvens() {
     me = this;
+
     // Gán các sự kiện:
     $('#btnAdd').click(function() {
         dialog.dialog('open');
@@ -75,6 +90,10 @@ function initEvens() {
 
     $('#btnCancel').click(function() {
         dialog.dialog('close');
+    })
+
+    $('#btnCancel2').click(function() {
+        warning.dialog('close');
     })
 
     $('#btnSave').click(function() {
@@ -125,7 +144,7 @@ function initEvens() {
             dialog.dialog('close');
             me.loadData();
         }).fail(function(res) {
-            // debugger
+            alert('Thông tin đã tồn tại trên hệ thống Tình yêu nhé. Vui lòng nhập lại !');
         }.bind(this))
     })
 
@@ -133,11 +152,184 @@ function initEvens() {
         // dialog.dialog('close');
         me.loadData();
     })
+    $("#tbListData tbody").on('click', 'tr', me.theRowSelected);
 
+    $('#btnDelete').click(function() {
+        warning.dialog('open');
+
+        $('#btnOk').click(function() {
+            $.ajax({
+                // url: 'http://api.manhnv.net/api/employees',
+                url: 'https://localhost:44376/api/Employees/' + 'Id',
+                method: 'DELETE',
+                // data: JSON.stringify(employee),
+                dataType: 'json',
+                contentType: 'application/json'
+            }).done(function(res) {
+                // Sau khi lưu thành công thì: 
+                // + Đưa ra thông báo thành công
+                alert('Xóa thành công !');
+                // + Load lại dữ liệu
+                me.loadData();
+            }).fail(function(res) {
+                warning.dialog('close');
+                alert('Xóa thất bại !');
+            })
+        })
+    })
+
+    // $('#btnUpdate').click(function() {
+    //     warning.dialog('open');
+    //     $.ajax({
+    //         // url: 'http://api.manhnv.net/api/employees',
+    //         url: 'https://localhost:44376/api/Employees/' + recordId,
+    //         method: 'DELETE',
+    //         data: JSON.stringify(employee),
+    //         dataType: 'json',
+    //         contentType: 'application/json'
+    //     }).done(function(res) {
+    //         // Sau khi lưu thành công thì: 
+    //         // + Đưa ra thông báo thành công
+    //         alert('Xóa thành công !');
+    //         // + Load lại dữ liệu
+    //         me.loadData();
+    //     }).fail(function(res) {
+    //         // debugger
+    //     }.bind(this))
+    // })
+    // Hiển thị thông tin khi dbl một bản ghi trên danh sách thông tin
     $('#tbListData').on('dblclick', 'tr', function() {
         // load dữ liệu chi tiết:
 
         // Hiển thị dialog thông tin chi tiết:
         dialog.dialog('open');
     })
+
+    $('#btnSearch').on('click', function() {
+        me.btnSearchOnclick();
+    })
+}
+
+function searchDerpartment() {
+    $.ajax({
+        url: 'https://localhost:44376/api/EmployeeDepartment',
+        method: 'GET',
+        async: false,
+        dataType: 'json',
+        connectType: 'application/json'
+    }).done(function(res) {
+        console.log(res);
+        $.each(res, function(index, item) {
+            var option = $(`<option value=` + item['departmentId'] + `>` + item['departmentName'] + `</option>`);
+            $('#cbxDepartment').append(option);
+        })
+    }).fail(function(res) {
+        alert('Tìm kiến thất bại !');
+    })
+}
+
+function searchPosition() {
+
+    $.ajax({
+        url: 'https://localhost:44376/api/EmployeePosition',
+        method: 'GET',
+        async: false,
+        dataType: 'json',
+        connectType: 'application/json'
+    }).done(function(res) {
+        console.log(res);
+        $.each(res, function(index, item) {
+            var option = $(`<option value=` + item['positionId'] + `>` + item['positionName'] + `</option>`);
+            $('#cbxPosition').append(option);
+        })
+    }).fail(function(res) {
+        alert('Tìm kiến thất bại !');
+    })
+
+}
+
+function btnSearchOnclick() {
+    var inputSearch = $('#inputTxt').val();
+    var departmentId = $('.filter-left #cbxDepartment option:selected').val();
+    var positionId = $('.filter-left #cbxPosition option:selected').val();
+    console.log(departmentId);
+    console.log(positionId);
+    $('#tbListData tbody').empty();
+    $.ajax({
+        url: 'https://localhost:44376/api/Employees/search?ContainInfo' + inputSearch + '&DepartmentId=' + departmentId + '&PositionId=' + positionId,
+        method: 'GET',
+        dataType: 'json',
+        contentType: 'application/json'
+    }).done(function(res) {
+        generateTable(res);
+        var count = $('#tbListData tbody tr');
+        if (count.length == 0) {
+            alert("Không tìm thấy thông tin nhân viên này trong hệ thống !");
+        }
+    }).fail(function(res) {
+        alert('Tìm kiến thất bại !');
+    })
+}
+
+function generateTable(res) {
+    //Lấy thông tin các cột dữ liệu
+    var ths = $('#tbListData thead th');
+    $.each(res, function(index, obj) {
+        var tr = $(`<tr> </tr>`);
+        $(tr).data("recordId", obj.EmployeeId);
+        $(tr).data("recordCode", obj.EmployeeCode);
+        $.each(ths, function(index, th) {
+            //Lấy thông tin dữ liệu sẽ Map tương ứng với các cột 
+            var fieldName = $(th).attr('fieldName')
+            var value = obj[fieldName];
+            var formatType = $(th).attr('formatType')
+            var td = $(`<td ` + value + `"></td>`);
+            switch (formatType) {
+                case "Gender":
+                    value = formatGender(value);
+                    break;
+                case "ddmmyyyy":
+                    value = formatDate(value);
+                    var td = $(`<td ` + value + `"></td>`);
+                    break;
+                case "PositionName":
+                    value = formatPosition(value);
+                    var td = $(`<td ` + value + `"></td>`);
+                    break;
+                case "DepartmentName":
+                    value = formatDepartment(value);
+                    var td = $(`<td ` + value + `"></td>`);
+                    break;
+                case "Money":
+                    value = formatMoney(value);
+                    var td = $(`<td class="text-align-right"` + value + `"></td>`);
+                    break;
+                case "WorkStatusName":
+                    value = formatWorkStatus(value);
+                    var td = $(`<td ` + value + `"></td>`);
+                    break;
+                default:
+                    break;
+            }
+            td.append(value);
+            $(tr).append(td);
+        })
+        $('#tbListData tbody').append(tr);
+    })
+}
+
+function showImagePreview() {
+    $('.default-avt').click(function() {
+        $('#avtUpdate').click();
+    });
+
+    $('#avtUpdate').change(function() {
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('.default-avt').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(this.files[0])
+        }
+    });
 }

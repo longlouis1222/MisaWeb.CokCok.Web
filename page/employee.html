@@ -103,22 +103,23 @@
       </div>
       <div class="filter-bar">
         <div class="filter-left">
-          <input type="text" class="icon-search input-search" placeholder="Tìm kiếm theo Mã, Tên nhân viên">
-          <select id="cbxDepartment" fieldName="DepartmentName" fieldValue="DepartmentId" api="https://localhost:44376/api/EmployeeDepartments" class="m-control">
-            <option>Tất cả phòng ban</option>
+          <input type="text" class="icon-search input-search" id="inputTxt" placeholder="Tìm kiếm theo Mã, Tên nhân viên">
+          <select id="cbxDepartment" fieldName="DepartmentName" fieldValue="DepartmentId" api="https://localhost:44376/api/EmployeeDepartments" class="w-170">
             <option value="34bd2cef-5026-567c-3b71-153b37881afe">Phòng Đào tạo</option>
             <option value="43a6bdf5-1b6b-451b-3695-2c566fa88632">Phòng Công nghệ</option>
             <option value="64a59a25-2488-54b0-f6b4-c8af08a50cbf">Phòng Nhân sự</option>
             <option value="674934cc-42cf-20cf-1d4a-aea48a10ed18">Phòng Marketting</option>
           </select>
-          <select id="cbxPosition" fieldName="PositionName" fieldValue="PositionId" api="https://localhost:44376/api/EmployeePositions" class="m-control">
-            <option>Tất cả vị trí</option>
+          <select id="cbxPosition" fieldName="PositionName" fieldValue="PositionId" api="https://localhost:44376/api/EmployeePositions" class="w-170">
             <option value="19165ed7-212e-21c4-0428-030d4265475f">Giám đốc</option>
             <option value="3631011e-4559-4ad8-b0ad-cb989f2177da">Trưởng phòng</option>
             <option value="7a0b757e-41eb-4df6-c6f8-494a84b910f4">Nhân viên</option>
           </select>
         </div>
         <div class="filter-right">
+          <button id="btnSearch" class="m-second-button m-btn-search"></button>
+          <button id="btnUpdate" class="m-second-button m-btn-update">Sửa</button>
+          <button id="btnDelete" class="m-second-button m-btn-delete">Xóa</button>
           <button id="btnRefresh" class="m-second-button m-btn-refresh"></button>
         </div>
       </div>
@@ -135,7 +136,7 @@
                 <th colspan="1" rowspan="1" fieldName="FullName">
                   <div class="cell">Họ và tên</div>
                 </th>
-                <th colspan="1" rowspan="1" fieldName="GenderName">
+                <th colspan="1" rowspan="1" fieldName="Gender" formatType="Gender">
                   <div class="cell w-82">Giới tính</div>
                 </th>
                 <th colspan="1" rowspan="1" fieldName="DateOfBirth" formatType="ddmmyyyy" style="text-align:center">
@@ -147,16 +148,16 @@
                 <th colspan="1" rowspan="1" fieldName="Email">
                   <div class="cell">Email</div>
                 </th>
-                <th colspan="1" rowspan="1" fieldName="PositionName">
+                <th colspan="1" rowspan="1" fieldName="Position" formatType="PositionName">
                   <div class="cell">Chức vụ</div>
                 </th>
-                <th colspan="1" rowspan="1" fieldName="DepartmentName">
+                <th colspan="1" rowspan="1" fieldName="Department" formatType="DepartmentName">
                   <div class="cell">Phòng ban</div>
                 </th>
                 <th colspan="1" rowspan="1" fieldName="Salary" formatType="Money">
                   <div class="cell w-140">Mức lương cơ bản</div>
                 </th>
-                <th colspan="1" rowspan="1" fieldName="WorkStatusName">
+                <th colspan="1" rowspan="1" fieldName="WorkStatusName" fomatType="WorkStatusName">
                   <div class="cell w-155">Tình trạng công việc</div>
                 </th>
                 <th class="gutter" style="width: 6px;"></th>
@@ -236,8 +237,11 @@
       </div>
       <div class="filter-info">
         <div class="filter-avt">
-          <div class="default-avt"></div>
+          <div class="default-avt-upload">
+            <img src="../content/img/default-avatar.jpg" class="default-avt">
+          </div>
           <p>(Vui lòng chọn ảnh có địng dạng .jpg, .jpeg, .png, .gif)</p>
+          <input type="file" id="avtUpdate" style="display:none" />
         </div>
 
         <div class="filter-info-right">
@@ -359,6 +363,19 @@
       <div class="dialog-btn">
         <button class="m-btn cancel-btn" id="btnCancel">Hủy</button>
         <button class="m-btn save-btn" id="btnSave"><i class="fa fa-floppy-o" aria-hidden="true"></i>Lưu</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="warning">
+    <div class="warning__content" title="Warning!!!">
+      <div class="warning-text">
+        <h2 style="color: red;">Cảnh báo !!!</h2>
+        <p style="font-size: 16px;padding: 16px;">Bạn có chắc muốn Xóa thông tin nhân viên này không ?</p>
+      </div>
+      <div class="warning-btn">
+        <button class="m-btn cancel-btn" id="btnCancel2">Hủy</button>
+        <button class="m-btn save-btn" id="btnOk">Có</button>
       </div>
     </div>
   </div>
