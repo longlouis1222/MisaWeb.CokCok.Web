@@ -212,7 +212,7 @@ function initEvens() {
 
 function searchDerpartment() {
     $.ajax({
-        url: 'https://localhost:44376/api/EmployeeDepartment',
+        url: 'https://localhost:44376/api/EmployeeDepartments',
         method: 'GET',
         async: false,
         dataType: 'json',
@@ -220,7 +220,7 @@ function searchDerpartment() {
     }).done(function(res) {
         console.log(res);
         $.each(res, function(index, item) {
-            var option = $(`<option value=` + item['departmentId'] + `>` + item['departmentName'] + `</option>`);
+            var option = $(`<option value=` + item['DepartmentId'] + `>` + item['DepartmentName'] + `</option>`);
             $('#cbxDepartment').append(option);
         })
     }).fail(function(res) {
@@ -231,7 +231,7 @@ function searchDerpartment() {
 function searchPosition() {
 
     $.ajax({
-        url: 'https://localhost:44376/api/EmployeePosition',
+        url: 'https://localhost:44376/api/EmployeePositions',
         method: 'GET',
         async: false,
         dataType: 'json',
@@ -239,7 +239,7 @@ function searchPosition() {
     }).done(function(res) {
         console.log(res);
         $.each(res, function(index, item) {
-            var option = $(`<option value=` + item['positionId'] + `>` + item['positionName'] + `</option>`);
+            var option = $(`<option value=` + item['PositionId'] + `>` + item['PositionName'] + `</option>`);
             $('#cbxPosition').append(option);
         })
     }).fail(function(res) {
@@ -250,13 +250,14 @@ function searchPosition() {
 
 function btnSearchOnclick() {
     var inputSearch = $('#inputTxt').val();
-    var departmentId = $('.filter-left #cbxDepartment option:selected').val();
-    var positionId = $('.filter-left #cbxPosition option:selected').val();
-    console.log(departmentId);
-    console.log(positionId);
+    var DepartmentId = $('.filter-left #cbxDepartment option:selected').val();
+    var PositionId = $('.filter-left #cbxPosition option:selected').val();
+    console.log(inputSearch);
+    console.log(DepartmentId);
+    console.log(PositionId);
     $('#tbListData tbody').empty();
     $.ajax({
-        url: 'https://localhost:44376/api/Employees/search?ContainInfo' + inputSearch + '&DepartmentId=' + departmentId + '&PositionId=' + positionId,
+        url: 'https://localhost:44376/api/Employees/search?ContainInfo=' + inputSearch + '&DepartmentId=' + DepartmentId + '&PositionId=' + PositionId,
         method: 'GET',
         dataType: 'json',
         contentType: 'application/json'
@@ -273,40 +274,34 @@ function btnSearchOnclick() {
 
 function generateTable(res) {
     //Lấy thông tin các cột dữ liệu
-    var ths = $('#tbListData thead th');
+    var threads = $('#tbListData thead th');
     $.each(res, function(index, obj) {
         var tr = $(`<tr> </tr>`);
-        $(tr).data("recordId", obj.EmployeeId);
-        $(tr).data("recordCode", obj.EmployeeCode);
-        $.each(ths, function(index, th) {
+        $.each(threads, function(index, th) {
             //Lấy thông tin dữ liệu sẽ Map tương ứng với các cột 
             var fieldName = $(th).attr('fieldName')
             var value = obj[fieldName];
             var formatType = $(th).attr('formatType')
-            var td = $(`<td ` + value + `"></td>`);
+            var td = $(`<td>` + `<div title="` + value + `"></div>` + `</td>`);
             switch (formatType) {
                 case "Gender":
                     value = formatGender(value);
                     break;
                 case "ddmmyyyy":
                     value = formatDate(value);
-                    var td = $(`<td ` + value + `"></td>`);
                     break;
                 case "PositionName":
                     value = formatPosition(value);
-                    var td = $(`<td ` + value + `"></td>`);
                     break;
                 case "DepartmentName":
                     value = formatDepartment(value);
-                    var td = $(`<td ` + value + `"></td>`);
                     break;
                 case "Money":
                     value = formatMoney(value);
-                    var td = $(`<td class="text-align-right"` + value + `"></td>`);
+                    td.addClass('text-align-right');
                     break;
                 case "WorkStatusName":
                     value = formatWorkStatus(value);
-                    var td = $(`<td ` + value + `"></td>`);
                     break;
                 default:
                     break;

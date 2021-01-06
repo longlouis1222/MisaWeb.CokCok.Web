@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -103,14 +103,14 @@
       </div>
       <div class="filter-bar">
         <div class="filter-left">
-          <input type="text" class="icon-search input-search" id="inputTxt" placeholder="Tìm kiếm theo Mã, Tên nhân viên">
-          <select id="cbxDepartment" fieldName="DepartmentName" fieldValue="DepartmentId" api="https://localhost:44376/api/EmployeeDepartments" class="w-170">
+          <input type="text" id="inputTxt" class="icon-search input-search" placeholder="Tìm kiếm theo Mã, Tên nhân viên"/>
+          <select id="cbxDepartment" fieldName="DepartmentId" fieldValue="DepartmentId" api="https://localhost:44376/api/EmployeeDepartments" class="w-170">
             <option value="34bd2cef-5026-567c-3b71-153b37881afe">Phòng Đào tạo</option>
             <option value="43a6bdf5-1b6b-451b-3695-2c566fa88632">Phòng Công nghệ</option>
             <option value="64a59a25-2488-54b0-f6b4-c8af08a50cbf">Phòng Nhân sự</option>
             <option value="674934cc-42cf-20cf-1d4a-aea48a10ed18">Phòng Marketting</option>
           </select>
-          <select id="cbxPosition" fieldName="PositionName" fieldValue="PositionId" api="https://localhost:44376/api/EmployeePositions" class="w-170">
+          <select id="cbxPosition" fieldName="PositionId" fieldValue="PositionId" api="https://localhost:44376/api/EmployeePositions" class="w-170">
             <option value="19165ed7-212e-21c4-0428-030d4265475f">Giám đốc</option>
             <option value="3631011e-4559-4ad8-b0ad-cb989f2177da">Trưởng phòng</option>
             <option value="7a0b757e-41eb-4df6-c6f8-494a84b910f4">Nhân viên</option>
@@ -148,16 +148,16 @@
                 <th colspan="1" rowspan="1" fieldName="Email">
                   <div class="cell">Email</div>
                 </th>
-                <th colspan="1" rowspan="1" fieldName="Position" formatType="PositionName">
+                <th colspan="1" rowspan="1" fieldName="PositionId" formatType="PositionName">
                   <div class="cell">Chức vụ</div>
                 </th>
-                <th colspan="1" rowspan="1" fieldName="Department" formatType="DepartmentName">
+                <th colspan="1" rowspan="1" fieldName="DepartmentId" formatType="DepartmentName">
                   <div class="cell">Phòng ban</div>
                 </th>
                 <th colspan="1" rowspan="1" fieldName="Salary" formatType="Money">
                   <div class="cell w-140">Mức lương cơ bản</div>
                 </th>
-                <th colspan="1" rowspan="1" fieldName="WorkStatusName" fomatType="WorkStatusName">
+                <th colspan="1" rowspan="1" fieldName="WorkStatus" formatType="WorkStatusName">
                   <div class="cell w-155">Tình trạng công việc</div>
                 </th>
                 <th class="gutter" style="width: 6px;"></th>

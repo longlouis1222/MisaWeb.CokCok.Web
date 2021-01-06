@@ -1,9 +1,9 @@
 .text-align-center {
-  text-align: center;
+  text-align: center !important;
 }
 
 .text-align-right {
-  text-align: right;
+  text-align: right !important;
 }
 
 .menu__item .menu__item--text a {
