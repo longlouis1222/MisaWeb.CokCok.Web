@@ -103,14 +103,17 @@
       </div>
       <div class="filter-bar">
         <div class="filter-left">
-          <input type="text" id="inputTxt" class="icon-search input-search" placeholder="Tìm kiếm theo Mã, Tên nhân viên"/>
-          <select id="cbxDepartment" fieldName="DepartmentId" fieldValue="DepartmentId" api="https://localhost:44376/api/EmployeeDepartments" class="w-170">
+          <input type="text" id="inputTxt" class="icon-search input-search"
+            placeholder="Tìm kiếm theo Mã, Tên nhân viên" />
+          <select id="cbxDepartment" fieldName="DepartmentId" fieldValue="DepartmentId"
+            api="https://localhost:44376/api/EmployeeDepartments" class="w-170">
             <option value="34bd2cef-5026-567c-3b71-153b37881afe">Phòng Đào tạo</option>
             <option value="43a6bdf5-1b6b-451b-3695-2c566fa88632">Phòng Công nghệ</option>
             <option value="64a59a25-2488-54b0-f6b4-c8af08a50cbf">Phòng Nhân sự</option>
             <option value="674934cc-42cf-20cf-1d4a-aea48a10ed18">Phòng Marketting</option>
           </select>
-          <select id="cbxPosition" fieldName="PositionId" fieldValue="PositionId" api="https://localhost:44376/api/EmployeePositions" class="w-170">
+          <select id="cbxPosition" fieldName="PositionId" fieldValue="PositionId"
+            api="https://localhost:44376/api/EmployeePositions" class="w-170">
             <option value="19165ed7-212e-21c4-0428-030d4265475f">Giám đốc</option>
             <option value="3631011e-4559-4ad8-b0ad-cb989f2177da">Trưởng phòng</option>
             <option value="7a0b757e-41eb-4df6-c6f8-494a84b910f4">Nhân viên</option>
@@ -126,10 +129,14 @@
       <div class="grid grid-customer">
 
         <div class="el-table__body-wrapper is-scrolling-none el-table__body_custom">
-          <table id="tbListData" cellspacing="0" cellpadding="0" border="0" class="el-table__body" style="min-width: 100%;">
+          <table id="tbListData" cellspacing="0" cellpadding="0" border="0" class="el-table__body"
+            style="min-width: 100%;">
 
             <thead class="has-gutter">
               <tr class="el-table__row">
+                <th colspan="1" rowspan="1" fieldName="SelectedEmployee">
+                  <div class="cell">#</div>
+                </th>
                 <th colspan="1" rowspan="1" fieldName="EmployeeCode">
                   <div class="cell" style="width: 130px;">Mã nhân viên</div>
                 </th>
@@ -165,6 +172,9 @@
             </thead>
             <tbody>
               <tr class="el-table__row first">
+                <td rowspan="1" colspan="1">
+                  <div class="cell"><input type="checkbox"></div>
+                </td>
                 <td rowspan="1" colspan="1" style="width: 100px;">
                   <div class="cell">NV-0441943</div>
                 </td>

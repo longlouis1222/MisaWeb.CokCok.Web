@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     dialog = $(".dialog__content").dialog({
         autoOpen: false,
         width: 680,
@@ -29,7 +29,7 @@ function loadData() {
         // url: 'http://api.manhnv.net/api/employees',
         url: 'https://localhost:44376/api/Employees',
         method: 'GET',
-    }).done(function(res) {
+    }).done(function (res) {
         console.log(res);
         //    debugger;
         // 2. Bước 2: xử lý dữ liệu
@@ -44,7 +44,8 @@ function loadData() {
             var DepartmentName = formatDepartment(res[i].DepartmentId);
             var PositionName = formatPosition(res[i].PositionId);
             var WorkStatusName = formatWorkStatus(res[i].WorkStatus);
-            var trHtml = $(`<tr class="el-table__row first">
+            var trHtml = $(`<tr class="el-table__row first" id="${res[i].EmployeeId}">
+                            <td rowspan="1" colspan="1"><div class="cell" style="padding-top: 3px"><input value="${res[i].EmployeeId}" type="checkbox" style="width: 13px;height: 13px;"></div></td>
                             <td rowspan="1" colspan="1" style="width: 100px;"><div class="cell">${res[i].EmployeeCode}</div></td>
                             <td rowspan="1" colspan="1" style="width: 143px;"><div class="cell">${res[i].FullName}</div></td>
                             <td rowspan="1" colspan="1" style="width: 58px;"><div class="cell">${/* res[i]. */GenderName || ""}</div></td>
@@ -59,7 +60,7 @@ function loadData() {
                         </tr>`);
             $('#tbListData >tbody:last-child').append(trHtml);
         }
-    }).fail(function(res) {
+    }).fail(function (res) {
 
     })
 }
@@ -71,8 +72,6 @@ function loadData() {
 function theRowSelected() {
     $(this).addClass('row-selected');
     $(this).siblings().removeClass('row-selected');
-    Id = $(this).data('Id');
-    console.log(Id);
 }
 
 
@@ -80,26 +79,26 @@ function initEvens() {
     me = this;
 
     // Gán các sự kiện:
-    $('#btnAdd').click(function() {
+    $('#btnAdd').click(function () {
         dialog.dialog('open');
     })
 
-    $('.icon-exit').click(function() {
+    $('.icon-exit').click(function () {
         dialog.dialog('close');
     })
 
-    $('#btnCancel').click(function() {
+    $('#btnCancel').click(function () {
         dialog.dialog('close');
     })
 
-    $('#btnCancel2').click(function() {
+    $('#btnCancel2').click(function () {
         warning.dialog('close');
     })
 
-    $('#btnSave').click(function() {
+    $('#btnSave').click(function () {
         // Validate dữ liệu
         var inputValidates = $('input[required], input[email]');
-        $.each(inputValidates, function(index, input) {
+        $.each(inputValidates, function (index, input) {
             $(input).trigger('blur');
         })
         var inputInValids = $('input[validate = false]');
@@ -135,7 +134,7 @@ function initEvens() {
             method: 'POST',
             data: JSON.stringify(employee),
             contentType: 'application/json'
-        }).done(function(res) {
+        }).done(function (res) {
             // Sau khi lưu thành công thì: 
             // + Đưa ra thông báo thành công
             // + ẩn form chi tiết
@@ -143,39 +142,51 @@ function initEvens() {
             alert('Thêm mới thành công !');
             dialog.dialog('close');
             me.loadData();
-        }).fail(function(res) {
+        }).fail(function (res) {
             alert('Thông tin đã tồn tại trên hệ thống Tình yêu nhé. Vui lòng nhập lại !');
         }.bind(this))
     })
 
-    $('#btnRefresh').click(function() {
+    $('#btnRefresh').click(function () {
         // dialog.dialog('close');
         me.loadData();
     })
     $("#tbListData tbody").on('click', 'tr', me.theRowSelected);
 
-    $('#btnDelete').click(function() {
+    $('#btnDelete').click(function () {
         warning.dialog('open');
 
-        $('#btnOk').click(function() {
-            $.ajax({
-                // url: 'http://api.manhnv.net/api/employees',
-                url: 'https://localhost:44376/api/Employees/' + 'Id',
-                method: 'DELETE',
-                // data: JSON.stringify(employee),
-                dataType: 'json',
-                contentType: 'application/json'
-            }).done(function(res) {
-                // Sau khi lưu thành công thì: 
-                // + Đưa ra thông báo thành công
-                alert('Xóa thành công !');
-                // + Load lại dữ liệu
-                me.loadData();
-            }).fail(function(res) {
+        $('#btnOk').click(function () {
+            var values = [];
+            $('tr input:checked').each(function () {
+                values.push($(this).attr('value'));
+            });
+            if (values.length == 0) {
+                alert("Bạn chưa chọn bất kì nhân viên nào.");
                 warning.dialog('close');
-                alert('Xóa thất bại !');
-            })
-        })
+            } else {
+                $.each(values, function (index, value) {
+                    $.ajax({
+                        // url: 'http://api.manhnv.net/api/employees',
+                        url: 'https://localhost:44376/api/Employees/' + value,
+                        method: 'DELETE',
+                        data: null,
+                        dataType: 'json',
+                        contentType: 'application/json'
+                    }).done(function (res) {
+                        // Sau khi lưu thành công thì: 
+                        // + Đưa ra thông báo thành công
+                        alert('Xóa thành công !');
+                        // + Load lại dữ liệu
+                        warning.dialog('close');
+                        me.loadData();
+                    }).fail(function (res) {
+                        warning.dialog('close');
+                        alert('Xóa thất bại !');
+                    })
+                });
+            }
+        });
     })
 
     // $('#btnUpdate').click(function() {
@@ -198,14 +209,14 @@ function initEvens() {
     //     }.bind(this))
     // })
     // Hiển thị thông tin khi dbl một bản ghi trên danh sách thông tin
-    $('#tbListData').on('dblclick', 'tr', function() {
+    $('#tbListData').on('dblclick', 'tr', function () {
         // load dữ liệu chi tiết:
 
         // Hiển thị dialog thông tin chi tiết:
         dialog.dialog('open');
     })
 
-    $('#btnSearch').on('click', function() {
+    $('#btnSearch').on('click', function () {
         me.btnSearchOnclick();
     })
 }
@@ -217,13 +228,13 @@ function searchDerpartment() {
         async: false,
         dataType: 'json',
         connectType: 'application/json'
-    }).done(function(res) {
+    }).done(function (res) {
         console.log(res);
-        $.each(res, function(index, item) {
+        $.each(res, function (index, item) {
             var option = $(`<option value=` + item['DepartmentId'] + `>` + item['DepartmentName'] + `</option>`);
             $('#cbxDepartment').append(option);
         })
-    }).fail(function(res) {
+    }).fail(function (res) {
         alert('Tìm kiến thất bại !');
     })
 }
@@ -236,13 +247,13 @@ function searchPosition() {
         async: false,
         dataType: 'json',
         connectType: 'application/json'
-    }).done(function(res) {
+    }).done(function (res) {
         console.log(res);
-        $.each(res, function(index, item) {
+        $.each(res, function (index, item) {
             var option = $(`<option value=` + item['PositionId'] + `>` + item['PositionName'] + `</option>`);
             $('#cbxPosition').append(option);
         })
-    }).fail(function(res) {
+    }).fail(function (res) {
         alert('Tìm kiến thất bại !');
     })
 
@@ -261,13 +272,13 @@ function btnSearchOnclick() {
         method: 'GET',
         dataType: 'json',
         contentType: 'application/json'
-    }).done(function(res) {
+    }).done(function (res) {
         generateTable(res);
         var count = $('#tbListData tbody tr');
         if (count.length == 0) {
             alert("Không tìm thấy thông tin nhân viên này trong hệ thống !");
         }
-    }).fail(function(res) {
+    }).fail(function (res) {
         alert('Tìm kiến thất bại !');
     })
 }
@@ -275,9 +286,11 @@ function btnSearchOnclick() {
 function generateTable(res) {
     //Lấy thông tin các cột dữ liệu
     var threads = $('#tbListData thead th');
-    $.each(res, function(index, obj) {
+    $.each(res, function (index, obj) {
         var tr = $(`<tr> </tr>`);
-        $.each(threads, function(index, th) {
+        //Thêm cho thẻ tr 1 cái id = id của employee
+        $(tr).attr('id', obj["EmployeeId"]);
+        $.each(threads, function (index, th) {
             //Lấy thông tin dữ liệu sẽ Map tương ứng với các cột 
             var fieldName = $(th).attr('fieldName')
             var value = obj[fieldName];
@@ -306,7 +319,13 @@ function generateTable(res) {
                 default:
                     break;
             }
-            td.append(value);
+            if (fieldName == 'SelectedEmployee') {
+                var tagcheckbox = $(`<input type="checkbox" style="width:13px;height:13px">`);
+                $(tagcheckbox).attr('value', obj["EmployeeId"]);
+                $(td).append(tagcheckbox);
+            } else {
+                $(td).append(value);
+            }
             $(tr).append(td);
         })
         $('#tbListData tbody').append(tr);
@@ -314,14 +333,14 @@ function generateTable(res) {
 }
 
 function showImagePreview() {
-    $('.default-avt').click(function() {
+    $('.default-avt').click(function () {
         $('#avtUpdate').click();
     });
 
-    $('#avtUpdate').change(function() {
+    $('#avtUpdate').change(function () {
         if (this.files && this.files[0]) {
             var reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 $('.default-avt').attr('src', e.target.result);
             }
             reader.readAsDataURL(this.files[0])
