@@ -9,9 +9,13 @@ $(document).ready(function () {
         autoOpen: false,
         width: 500,
         modal: true
-    })
+    });
+    warning_success = $(".warning__content--success").dialog({
+        autoOpen: false,
+        width: 500,
+        modal: true
+    });
     loadData();
-
     initEvens();
     showImagePreview();
 })
@@ -44,7 +48,7 @@ function loadData() {
             var DepartmentName = formatDepartment(res[i].DepartmentId);
             var PositionName = formatPosition(res[i].PositionId);
             var WorkStatusName = formatWorkStatus(res[i].WorkStatus);
-            var trHtml = $(`<tr class="el-table__row first" id="${res[i].EmployeeId}">
+            var trHtml = $(`<tr class="el-table__row first" idtr="${res[i].EmployeeId}">
                             <td rowspan="1" colspan="1"><div class="cell" style="padding-top: 3px"><input value="${res[i].EmployeeId}" type="checkbox" style="width: 13px;height: 13px;"></div></td>
                             <td rowspan="1" colspan="1" style="width: 100px;"><div class="cell">${res[i].EmployeeCode}</div></td>
                             <td rowspan="1" colspan="1" style="width: 143px;"><div class="cell">${res[i].FullName}</div></td>
@@ -66,20 +70,27 @@ function loadData() {
 }
 
 /**
- * Thực hiện gán các sự kiện
+ * Hiệu ứng đổi màu cho Element vừa Select
  * Author: NHLONG (07/12/2020)
  * */
 function theRowSelected() {
     $(this).addClass('row-selected');
     $(this).siblings().removeClass('row-selected');
 }
-
-
+/**
+ * Hàm khởi tạo các sự kiện
+ * Author: NHLONG (07/12/2020)
+ */
 function initEvens() {
     me = this;
-
+    var notify;
+    var isUpdated = false;
+    var idEmployeeSelected = 0;
     // Gán các sự kiện:
     $('#btnAdd').click(function () {
+        isUpdated = false;
+        ResetDialog();
+        LoadEmployeeCode();
         dialog.dialog('open');
     })
 
@@ -91,10 +102,11 @@ function initEvens() {
         dialog.dialog('close');
     })
 
-    $('#btnCancel2').click(function () {
+    $('.btnCancel2').click(function () {
         warning.dialog('close');
+        warning_success.dialog('close');
     })
-
+    // Save or Update Data
     $('#btnSave').click(function () {
         // Validate dữ liệu
         var inputValidates = $('input[required], input[email]');
@@ -109,6 +121,7 @@ function initEvens() {
         }
         // Thu thập thông tin dữ liệu đc nhập -> build thành object
         var employee = {
+            // "EmployeeId": idEmployeeSelected,
             "EmployeeCode": $('#em-code').val(),
             "FullName": $('#em-name').val(),
             "DateOfBirth": $('#em-birth').val(),
@@ -128,46 +141,116 @@ function initEvens() {
         console.log(employee);
         // alert("success");
         // Gọi service tương ứng thực hiện dữ liệu
-        $.ajax({
-            // url: 'http://api.manhnv.net/api/employees',
-            url: 'https://localhost:44376/api/Employees',
-            method: 'POST',
-            data: JSON.stringify(employee),
-            contentType: 'application/json'
-        }).done(function (res) {
-            // Sau khi lưu thành công thì: 
-            // + Đưa ra thông báo thành công
-            // + ẩn form chi tiết
-            // + Load lại dữ liệu
-            alert('Thêm mới thành công !');
-            dialog.dialog('close');
-            me.loadData();
-        }).fail(function (res) {
-            alert('Thông tin đã tồn tại trên hệ thống Tình yêu nhé. Vui lòng nhập lại !');
-        }.bind(this))
+
+        if (isUpdated == true) {
+            $.ajax({
+                url: 'https://localhost:44376/api/Employees',
+                method: 'PUT',
+                data: JSON.stringify(employee),
+                contentType: 'application/json'
+            }).done(function (res) {
+                // Sau khi lưu thành công thì: 
+                // + Đưa ra thông báo thành công
+                // + ẩn form chi tiết
+                // + Load lại dữ liệu
+                notify = 'Bạn đã cập nhật thành công !!!';
+                $('#text-notify').text(notify);
+                warning_success.dialog('open');
+                dialog.dialog('close');
+                me.loadData();
+            }).fail(function (res) {
+                var messenger = res['responseJSON']['Messenger'];
+                alert(messenger);
+            })
+        } else {
+            // employee.EmployeeId = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
+            $.ajax({
+                url: 'https://localhost:44376/api/Employees',
+                method: 'POST',
+                data: JSON.stringify(employee),
+                contentType: 'application/json'
+            }).done(function (res) {
+                // Sau khi lưu thành công thì: 
+                // + Đưa ra thông báo thành công
+                // + ẩn form chi tiết
+                // + Load lại dữ liệu
+                notify = 'Bạn đã thêm mới thành công !!!';
+                $('#text-notify').text(notify);
+                warning_success.dialog('open');
+                dialog.dialog('close');
+                me.loadData();
+            }).fail(function (res) {
+                var messenger = res['responseJSON']['Messenger'];
+                $('#text-notify').text(messenger);
+                warning_success.dialog('open');
+            })
+        }
     })
 
+    // Hiển thị thông tin khi dbl một bản ghi trên danh sách thông tin
+    $('#tbListData tbody').on('dblclick', 'tr', function () {
+        // load dữ liệu chi tiết:
+        ResetDialog();
+        isUpdated = true;
+        idEmployeeSelected = $(this).attr("idtr");
+        console.log(idEmployeeSelected);
+        $.ajax({
+            url: 'https://localhost:44376/api/Employees/' + idEmployeeSelected,
+            method: 'GET',
+            data: null,
+            dataType: 'json',
+            contentType: 'application/json'
+        }).done(function (res) {
+            $('#em-code').val(res[0]["EmployeeCode"]);
+            $('#em-name').val(res[0]['FullName']);
+            // $('#em-birth').val(res[0]['DateOfBirth']);
+            // $('#em-identification').val(res[0]['IdentityCardNumber']);
+            // $('#em-identifyDate').val(res[0]['IdentityDate']);
+            // $('#em-identifyPlace').val(res[0]['IdentityPlace']);
+            // $('#em-email').val(res[0]['Email']);
+            // $('#em-phone').val(res[0]['PhoneNumber']);
+            // $('#em-tax').val(res[0]['TaxCode']);
+            // $('#em-salary').val(res[0]['Salary']);
+            // $('#em-dateJoin').val(res[0]['DateJoin']);
+            // var DepartmentStringSelected = "option[value='" + res[0]['EmployeeDepartmentId'] + "']";
+            // $('#em-department').find(DepartmentStringSelected).attr('selected', 'selected');
+            // var PositionStringSelected = "option[value='" + res[0]['EmployeePositionId'] + "']";
+            // $('#em-position').find(PositionStringSelected).attr('selected', 'selected');
+            // var GenderNumberSelected = "option[value='" + res[0]['Gender'] + "']";
+            // $('em-gender').find(GenderNumberSelected).attr('selected', 'selected');
+            // var WorkstatusNumberSelected = "option[value='" + res[0]['WorkStatus'] + "']";
+            // $('#cbxWorkStatus').find(WorkstatusNumberSelected).attr('selected', 'selected');
+
+        }).fail(function (res) {
+            alert('nope');
+        })
+        // Hiển thị dialog thông tin chi tiết:
+        dialog.dialog('open');
+    })
+
+    // Refresh Data
     $('#btnRefresh').click(function () {
         // dialog.dialog('close');
         me.loadData();
     })
+    // Effect Selection and Delete Elements
     $("#tbListData tbody").on('click', 'tr', me.theRowSelected);
 
     $('#btnDelete').click(function () {
         warning.dialog('open');
-
         $('#btnOk').click(function () {
             var values = [];
             $('tr input:checked').each(function () {
                 values.push($(this).attr('value'));
             });
             if (values.length == 0) {
-                alert("Bạn chưa chọn bất kì nhân viên nào.");
+                notify = 'Bạn chưa chọn bất kỳ nhân viên nào !!!';
+                $('#text-notify').text(notify);
+                warning_success.dialog('open');
                 warning.dialog('close');
             } else {
                 $.each(values, function (index, value) {
                     $.ajax({
-                        // url: 'http://api.manhnv.net/api/employees',
                         url: 'https://localhost:44376/api/Employees/' + value,
                         method: 'DELETE',
                         data: null,
@@ -176,48 +259,66 @@ function initEvens() {
                     }).done(function (res) {
                         // Sau khi lưu thành công thì: 
                         // + Đưa ra thông báo thành công
-                        alert('Xóa thành công !');
-                        // + Load lại dữ liệu
                         warning.dialog('close');
+                        notify = 'Bạn đã thực hiện Xóa thành công !!!';
+                        $('#text-notify').text(notify);
+                        warning_success.dialog('open');
+                        // + Load lại dữ liệu
                         me.loadData();
                     }).fail(function (res) {
                         warning.dialog('close');
                         alert('Xóa thất bại !');
                     })
-                });
+                })
             }
-        });
-    })
-
-    // $('#btnUpdate').click(function() {
-    //     warning.dialog('open');
-    //     $.ajax({
-    //         // url: 'http://api.manhnv.net/api/employees',
-    //         url: 'https://localhost:44376/api/Employees/' + recordId,
-    //         method: 'DELETE',
-    //         data: JSON.stringify(employee),
-    //         dataType: 'json',
-    //         contentType: 'application/json'
-    //     }).done(function(res) {
-    //         // Sau khi lưu thành công thì: 
-    //         // + Đưa ra thông báo thành công
-    //         alert('Xóa thành công !');
-    //         // + Load lại dữ liệu
-    //         me.loadData();
-    //     }).fail(function(res) {
-    //         // debugger
-    //     }.bind(this))
-    // })
-    // Hiển thị thông tin khi dbl một bản ghi trên danh sách thông tin
-    $('#tbListData').on('dblclick', 'tr', function () {
-        // load dữ liệu chi tiết:
-
-        // Hiển thị dialog thông tin chi tiết:
-        dialog.dialog('open');
+        })
     })
 
     $('#btnSearch').on('click', function () {
         me.btnSearchOnclick();
+    })
+}
+function ResetDialog() {
+    $('#em-code').val('');
+    $('#em-name').val('');
+    $('#em-birth').val('');
+    $('#em-identification').val('');
+    $('#em-identifyDate').val('');
+    $('#em-identifyPlace').val('');
+    $('#em-email').val('');
+    $('#em-phone').val('');
+    $('#em-tax').val('');
+    // $('#em-salary').val('');
+    $('#em-dateJoin').val('');
+    // $('#cbxWorkStatus').val('');
+}
+
+function LoadEmployeeCode() {
+    $.ajax({
+        url: 'https://localhost:44376/api/Employees',
+        method: 'GET',
+        data: null,
+        dataType: 'json',
+        contentType: 'application/json'
+    }).done(function (res) {
+        var strmax = res[0]["EmployeeCode"];
+        var max = strmax.substring(3, strmax.length);
+        // console.log(max);
+        // var newEmployeeCode = Number(max) + 1;
+        var newEmployeeCode;
+        if (max > 0 && max <= 9) {
+            newEmployeeCode = '0000' + (Number(max) + 1);
+        } else if (max >= 10 && max <= 99) {
+            newEmployeeCode = '000' + (Number(max) + 1);
+        } else if (max >= 100 && max <= 999) {
+            newEmployeeCode = '00' + (Number(max) + 1);
+        } else if (max >= 1000 && max <= 9999) {
+            newEmployeeCode = '0' + (Number(max) + 1);
+        } else {
+            newEmployeeCode = Number(max) + 1;
+        }
+        $('#em-code').val("NV-" + newEmployeeCode);
+    }).fail(function (res) {
     })
 }
 
@@ -276,7 +377,9 @@ function btnSearchOnclick() {
         generateTable(res);
         var count = $('#tbListData tbody tr');
         if (count.length == 0) {
-            alert("Không tìm thấy thông tin nhân viên này trong hệ thống !");
+            notify = 'Không tìm thấy thông tin nhân viên này trong hệ thống !!!';
+            $('#text-notify').text(notify);
+            warning_success.dialog('open');
         }
     }).fail(function (res) {
         alert('Tìm kiến thất bại !');
@@ -289,7 +392,7 @@ function generateTable(res) {
     $.each(res, function (index, obj) {
         var tr = $(`<tr> </tr>`);
         //Thêm cho thẻ tr 1 cái id = id của employee
-        $(tr).attr('id', obj["EmployeeId"]);
+        $(tr).attr('idtr', obj["EmployeeId"]);
         $.each(threads, function (index, th) {
             //Lấy thông tin dữ liệu sẽ Map tương ứng với các cột 
             var fieldName = $(th).attr('fieldName')

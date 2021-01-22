@@ -209,11 +209,9 @@
                   <div class="cell"></div>
                 </td>
               </tr>
-
             </tbody>
           </table>
         </div>
-
       </div>
 
       <div class="paging-bar">
@@ -378,17 +376,31 @@
   </div>
 
   <div class="warning">
-    <div class="warning__content" title="Warning!!!">
+    <!-- Hộp thoại cảnh báo -->
+    <div class="warning__content">
       <div class="warning-text">
         <h2 style="color: red;">Cảnh báo !!!</h2>
         <p style="font-size: 16px;padding: 16px;">Bạn có chắc muốn Xóa thông tin nhân viên này không ?</p>
       </div>
       <div class="warning-btn">
-        <button class="m-btn cancel-btn" id="btnCancel2">Hủy</button>
+        <button class="m-btn cancel-btn btnCancel2" id="btnCancel2">Hủy</button>
         <button class="m-btn save-btn" id="btnOk">Có</button>
       </div>
     </div>
+    <!-- Hộp thoại thông báo sau khi thực hiện THÀNH CÔNG -->
+    <div class="warning__content--success">
+      <div class="warning-text">
+        <h2 style="color: red;">Thông báo !!!</h2>
+        <p style="font-size: 16px;padding: 16px;" id="text-notify">
+          <!-- Thực hiện thao tác thành công ! -->
+        </p>
+      </div>
+      <div class="warning-btn">
+        <button class="m-btn cancel-btn btnCancel2" id="btnCancel3">Đóng</button>
+      </div>
+    </div>
   </div>
+
   <script src="../lib/jquery-3.5.1.min.js"></script>
   <script src="../lib/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
   <script src="../js/page/employee.js"></script>
