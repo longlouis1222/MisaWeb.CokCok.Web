@@ -181,18 +181,18 @@ input[type="email"] {
   margin-right: 5px;
 }
 
- .warning-text {
+.warning-text {
   padding-bottom: 16px;
   text-align: center;
 }
 
- .warning-btn {
+.warning-btn {
   display: flex;
   width: 100%;
   justify-content: center;
 }
 
- .warning-btn>button {
+.warning-btn>button {
   margin-left: 16px;
   margin-bottom: 16px;
 }

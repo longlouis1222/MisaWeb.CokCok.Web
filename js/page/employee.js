@@ -33,6 +33,9 @@ function loadData() {
         // url: 'http://api.manhnv.net/api/employees',
         url: 'https://localhost:44376/api/Employees',
         method: 'GET',
+        data: null,
+        dataType: 'json',
+        contentType: 'application/json'
     }).done(function (res) {
         console.log(res);
         //    debugger;
@@ -40,30 +43,31 @@ function loadData() {
 
         // 3. Bước 3: Build html và append lên UI:
         $('#tbListData tbody').empty();
-        for (var i = 0; i < res.length; i++) {
-            // console.log(res[i]);
-            var DOB = formatDate(res[i].DateOfBirth);
-            var Salary = formatMoney(res[i].Salary);
-            var GenderName = formatGender(res[i].Gender);
-            var DepartmentName = formatDepartment(res[i].DepartmentId);
-            var PositionName = formatPosition(res[i].PositionId);
-            var WorkStatusName = formatWorkStatus(res[i].WorkStatus);
-            var trHtml = $(`<tr class="el-table__row first" idtr="${res[i].EmployeeId}">
-                            <td rowspan="1" colspan="1"><div class="cell" style="padding-top: 3px"><input value="${res[i].EmployeeId}" type="checkbox" style="width: 13px;height: 13px;"></div></td>
-                            <td rowspan="1" colspan="1" style="width: 100px;"><div class="cell">${res[i].EmployeeCode}</div></td>
-                            <td rowspan="1" colspan="1" style="width: 143px;"><div class="cell">${res[i].FullName}</div></td>
-                            <td rowspan="1" colspan="1" style="width: 58px;"><div class="cell">${/* res[i]. */GenderName || ""}</div></td>
-                            <td rowspan="1" colspan="1" style="width: 100px;"><div class="cell text-align-center">${DOB}</div></td>
-                            <td rowspan="1" colspan="1" style="width: 119px;"><div class="cell">${res[i].PhoneNumber}</div></td>
-                            <td rowspan="1" colspan="1" style="width: 192px;"><div class="cell" title="${res[i].Email}">${res[i].Email}</div></td>
-                            <td rowspan="1" colspan="1" style="width: 72px;"><div class="cell">${/* res[i]. */PositionName || ""}</div></td>
-                            <td rowspan="1" colspan="1" style="width: 232px;"><div class="cell">${/* res[i]. */DepartmentName || ""}</div></td>
-                            <td rowspan="1" colspan="1" style="width: 55px;"><div class="cell text-align-right">${/* res[i]. */Salary || ""}</div></td>
-                            <td rowspan="1" colspan="1" style="width: 98px;"><div class="cell">${/* res[i]. */WorkStatusName || ""}</div></td>
-                            <td rowspan="1" colspan="1" style="width: 32px;"><div class="cell"></div></td>
-                        </tr>`);
-            $('#tbListData >tbody:last-child').append(trHtml);
-        }
+        generateTable(res);
+        // for (var i = 0; i < res.length; i++) {
+        //     // console.log(res[i]);
+        //     var DOB = formatDate(res[i].DateOfBirth);
+        //     var Salary = formatMoney(res[i].Salary);
+        //     var GenderName = formatGender(res[i].Gender);
+        //     var DepartmentName = formatDepartment(res[i].DepartmentId);
+        //     var PositionName = formatPosition(res[i].PositionId);
+        //     var WorkStatusName = formatWorkStatus(res[i].WorkStatus);
+        //     var trHtml = $(`<tr class="el-table__row first" idtr="${res[i].EmployeeId}">
+        //                     <td rowspan="1" colspan="1"><div class="cell" style="padding-top: 3px"><input value="${res[i].EmployeeId}" type="checkbox" style="width: 13px;height: 13px;"></div></td>
+        //                     <td rowspan="1" colspan="1" style="width: 100px;"><div class="cell">${res[i].EmployeeCode}</div></td>
+        //                     <td rowspan="1" colspan="1" style="width: 143px;"><div class="cell">${res[i].FullName}</div></td>
+        //                     <td rowspan="1" colspan="1" style="width: 58px;"><div class="cell">${/* res[i]. */GenderName || ""}</div></td>
+        //                     <td rowspan="1" colspan="1" style="width: 100px;"><div class="cell text-align-center">${DOB}</div></td>
+        //                     <td rowspan="1" colspan="1" style="width: 119px;"><div class="cell">${res[i].PhoneNumber}</div></td>
+        //                     <td rowspan="1" colspan="1" style="width: 192px;"><div class="cell" title="${res[i].Email}">${res[i].Email}</div></td>
+        //                     <td rowspan="1" colspan="1" style="width: 72px;"><div class="cell">${/* res[i]. */PositionName || ""}</div></td>
+        //                     <td rowspan="1" colspan="1" style="width: 232px;"><div class="cell">${/* res[i]. */DepartmentName || ""}</div></td>
+        //                     <td rowspan="1" colspan="1" style="width: 55px;"><div class="cell text-align-right">${/* res[i]. */Salary || ""}</div></td>
+        //                     <td rowspan="1" colspan="1" style="width: 98px;"><div class="cell">${/* res[i]. */WorkStatusName || ""}</div></td>
+        //                     <td rowspan="1" colspan="1" style="width: 32px;"><div class="cell"></div></td>
+        //                 </tr>`);
+        //     $('#tbListData >tbody:last-child').append(trHtml);
+        // }
     }).fail(function (res) {
 
     })
@@ -120,14 +124,27 @@ function initEvens() {
             return;
         }
         // Thu thập thông tin dữ liệu đc nhập -> build thành object
+        var Dob = $('#em-birth').val() + 'T00:00:00';
+        if ($('#em-birth').val() == '') {
+            Dob = new Date();
+        }
+        var IdentityDate = $('#em-identifyDate').val() + 'T00:00:00';
+        if ($('#em-identifyDate').val() == '') {
+            IdentityDate = new Date();
+        }
+        var DateJoin = $('#em-dateJoin').val() + 'T00:00:00';
+        if ($('#em-dateJoin').val() == '') {
+            DateJoin = new Date();
+        }
+
         var employee = {
-            // "EmployeeId": idEmployeeSelected,
+            "EmployeeId": idEmployeeSelected,
             "EmployeeCode": $('#em-code').val(),
             "FullName": $('#em-name').val(),
-            "DateOfBirth": $('#em-birth').val(),
+            "DateOfBirth": Dob,
             "Gender": $('#em-gender').find(':selected').val(),
             "IdentityCardNumber": $('#em-identification').val(),
-            "IdentityDate": $('#em-identifyDate').val(),
+            "IdentityDate": IdentityDate,
             "IdentityPlace": $('#em-identifyPlace').val(),
             "Email": $('#em-email').val(),
             "PhoneNumber": $('#em-phone').val(),
@@ -135,18 +152,18 @@ function initEvens() {
             "DepartmentId": $('#em-department').find(':selected').val(),
             "TaxCode": $('#em-tax').val(),
             "Salary": $('#em-salary').val(),
-            "DateJoin": $('#em-dateJoin').val(),
+            "DateJoin": DateJoin,
             "WorkStatus": $('#cbxWorkStatus').find(':selected').val()
         }
         console.log(employee);
         // alert("success");
         // Gọi service tương ứng thực hiện dữ liệu
-
         if (isUpdated == true) {
             $.ajax({
                 url: 'https://localhost:44376/api/Employees',
                 method: 'PUT',
                 data: JSON.stringify(employee),
+                dataType: 'json',
                 contentType: 'application/json'
             }).done(function (res) {
                 // Sau khi lưu thành công thì: 
@@ -163,7 +180,7 @@ function initEvens() {
                 alert(messenger);
             })
         } else {
-            // employee.EmployeeId = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
+            employee.EmployeeId = idEmployeeSelected;
             $.ajax({
                 url: 'https://localhost:44376/api/Employees',
                 method: 'POST',
@@ -201,25 +218,25 @@ function initEvens() {
             dataType: 'json',
             contentType: 'application/json'
         }).done(function (res) {
-            $('#em-code').val(res[0]["EmployeeCode"]);
-            $('#em-name').val(res[0]['FullName']);
-            // $('#em-birth').val(res[0]['DateOfBirth']);
-            // $('#em-identification').val(res[0]['IdentityCardNumber']);
-            // $('#em-identifyDate').val(res[0]['IdentityDate']);
-            // $('#em-identifyPlace').val(res[0]['IdentityPlace']);
-            // $('#em-email').val(res[0]['Email']);
-            // $('#em-phone').val(res[0]['PhoneNumber']);
-            // $('#em-tax').val(res[0]['TaxCode']);
-            // $('#em-salary').val(res[0]['Salary']);
-            // $('#em-dateJoin').val(res[0]['DateJoin']);
-            // var DepartmentStringSelected = "option[value='" + res[0]['EmployeeDepartmentId'] + "']";
-            // $('#em-department').find(DepartmentStringSelected).attr('selected', 'selected');
-            // var PositionStringSelected = "option[value='" + res[0]['EmployeePositionId'] + "']";
-            // $('#em-position').find(PositionStringSelected).attr('selected', 'selected');
-            // var GenderNumberSelected = "option[value='" + res[0]['Gender'] + "']";
-            // $('em-gender').find(GenderNumberSelected).attr('selected', 'selected');
-            // var WorkstatusNumberSelected = "option[value='" + res[0]['WorkStatus'] + "']";
-            // $('#cbxWorkStatus').find(WorkstatusNumberSelected).attr('selected', 'selected');
+            $('#em-code').val(res['EmployeeCode']);
+            $('#em-name').val(res['FullName']);
+            $('#em-birth').val(formatDate(new Date(res['DateOfBirth'])));
+            $('#em-identification').val(res['IdentityCardNumber']);
+            $('#em-identifyDate').val(formatDate(new Date(res['IdentityDate'])));
+            $('#em-identifyPlace').val(res['IdentityPlace']);
+            $('#em-email').val(res['Email']);
+            $('#em-phone').val(res['PhoneNumber']);
+            $('#em-tax').val(res['TaxCode']);
+            $('#em-salary').val(res['Salary']);
+            $('#em-dateJoin').val(formatDate(new Date(res['DateJoin'])));
+            var DepartmentStringSelected = "option[value='" + res['EmployeeDepartmentId'] + "']";
+            $('#em-department').find(DepartmentStringSelected).attr('selected', 'selected');
+            var PositionStringSelected = "option[value='" + res['EmployeePositionId'] + "']";
+            $('#em-position').find(PositionStringSelected).attr('selected', 'selected');
+            var GenderNumberSelected = "option[value='" + res['Gender'] + "']";
+            $('em-gender').find(GenderNumberSelected).attr('selected', 'selected');
+            var WorkstatusNumberSelected = "option[value='" + res['WorkStatus'] + "']";
+            $('#cbxWorkStatus').find(WorkstatusNumberSelected).attr('selected', 'selected');
 
         }).fail(function (res) {
             alert('nope');
