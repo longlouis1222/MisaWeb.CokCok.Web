@@ -1,3 +1,8 @@
+var employees,
+    numberOfPage = 1,
+    currentPage = 1,
+    amountObj = 10;
+
 $(document).ready(function () {
     dialog = $(".dialog__content").dialog({
         autoOpen: false,
@@ -16,10 +21,11 @@ $(document).ready(function () {
         modal: true
     });
     loadData();
+    // loadDataOfEmployeesPerPage();
+    loadNumberOfPage();
     initEvens();
     showImagePreview();
 })
-
 /**
  * Thực hiện load dữ liệu
  * Author: NHLONG (07/12/2020)
@@ -30,8 +36,8 @@ function loadData() {
     // 1. Bước 1: gọi service lấy dữ liệu: (api.manhnv.net/api/employees)
     //debugger;
     $.ajax({
-        // url: 'http://api.manhnv.net/api/employees',
-        url: 'https://localhost:44376/api/Employees',
+        // url: 'https://localhost:44376/api/Employees',
+        url: 'http://api.manhnv.net/api/employees',
         method: 'GET',
         data: null,
         dataType: 'json',
@@ -40,10 +46,10 @@ function loadData() {
         console.log(res);
         //    debugger;
         // 2. Bước 2: xử lý dữ liệu
-
+        employees = res;
+        numberOfPage = Math.ceil(res.length / amountObj);
         // 3. Bước 3: Build html và append lên UI:
-        $('#tbListData tbody').empty();
-        generateTable(res);
+
         // for (var i = 0; i < res.length; i++) {
         //     // console.log(res[i]);
         //     var DOB = formatDate(res[i].DateOfBirth);
@@ -69,8 +75,27 @@ function loadData() {
         //     $('#tbListData >tbody:last-child').append(trHtml);
         // }
     }).fail(function (res) {
-
     })
+}
+
+function loadDataOfEmployeesPerPage() {
+    $.ajax({
+        url: 'https://localhost:44376/api/Employees/infoPerPage?StartRow=' + currentPage + '&NumberPage=' + amountObj,
+        method: 'GET',
+    }).done(function (res) {
+        // infoPerPage = res;
+        $('#tbListData tbody').empty();
+        generateTable(res);
+
+    }).fail(function (res) {
+    })
+}
+
+function selectedPage(obj) {
+    currentPage = obj;
+    loadNumberOfPage();
+    loadDataOfEmployeesPerPage();
+
 }
 
 /**
@@ -247,8 +272,9 @@ function initEvens() {
 
     // Refresh Data
     $('#btnRefresh').click(function () {
-        // dialog.dialog('close');
         me.loadData();
+        me.loadNumberOfPage();
+        me.loadDataOfEmployeesPerPage()
     })
     // Effect Selection and Delete Elements
     $("#tbListData tbody").on('click', 'tr', me.theRowSelected);
@@ -294,6 +320,30 @@ function initEvens() {
     $('#btnSearch').on('click', function () {
         me.btnSearchOnclick();
     })
+
+    //bắt sự kiện chọn trang đầu tiên
+    $('.m-btn-firstpage').click(function () {
+        selectedPage(1);
+    });
+
+    //bắt sự kiện chọn trang phía trước
+    $('.m-btn-prev-page').click(function () {
+        if (currentPage != 1) {
+            selectedPage(currentPage - 1);
+        }
+    });
+
+    //bắt sự kiện chọn trang phía sau
+    $('.m-btn-next-page').click(function () {
+        if (currentPage != numberOfPage) {
+            selectedPage(currentPage + 1);
+        }
+    });
+
+    //bắt sự kiện chọn trang đầu tiên
+    $('.m-btn-lastpage').click(function () {
+        selectedPage(numberOfPage);
+    });
 }
 function ResetDialog() {
     $('#em-code').val('');
@@ -385,13 +435,58 @@ function btnSearchOnclick() {
     console.log(DepartmentId);
     console.log(PositionId);
     $('#tbListData tbody').empty();
+    var startRecord = (currentPage - 1) * amountObj;
+    var endRecord = (currentPage - 1) * amountObj - amountObj;
     $.ajax({
         url: 'https://localhost:44376/api/Employees/search?ContainInfo=' + inputSearch + '&DepartmentId=' + DepartmentId + '&PositionId=' + PositionId,
         method: 'GET',
         dataType: 'json',
         contentType: 'application/json'
     }).done(function (res) {
-        generateTable(res);
+        for (var i = startRecord; i < res.length && i <= endRecord; i++) {
+            var tr = $(`<tr> </tr>`);
+            //Thêm cho thẻ tr 1 cái id = id của employee
+            $(tr).attr('idtr', obj["EmployeeId"]);
+            $.each(threads, function (index, th) {
+                //Lấy thông tin dữ liệu sẽ Map tương ứng với các cột 
+                var fieldName = $(th).attr('fieldName')
+                var value = obj[fieldName];
+                var formatType = $(th).attr('formatType')
+                var td = $(`<td>` + `<div title="` + value + `"></div>` + `</td>`);
+                switch (formatType) {
+                    case "Gender":
+                        value = formatGender(value);
+                        break;
+                    case "ddmmyyyy":
+                        value = formatDate(value);
+                        break;
+                    case "PositionName":
+                        value = formatPosition(value);
+                        break;
+                    case "DepartmentName":
+                        value = formatDepartment(value);
+                        break;
+                    case "Money":
+                        value = formatMoney(value);
+                        td.addClass('text-align-right');
+                        break;
+                    case "WorkStatusName":
+                        value = formatWorkStatus(value);
+                        break;
+                    default:
+                        break;
+                }
+                if (fieldName == 'SelectedEmployee') {
+                    var tagcheckbox = $(`<input type="checkbox" style="width:13px;height:13px">`);
+                    $(tagcheckbox).attr('value', obj["EmployeeId"]);
+                    $(td).append(tagcheckbox);
+                } else {
+                    $(td).append(value);
+                }
+                $(tr).append(td);
+            })
+            $('#tbListData tbody').append(tr);
+        }
         var count = $('#tbListData tbody tr');
         if (count.length == 0) {
             notify = 'Không tìm thấy thông tin nhân viên này trong hệ thống !!!';
@@ -403,53 +498,8 @@ function btnSearchOnclick() {
     })
 }
 
-function generateTable(res) {
-    //Lấy thông tin các cột dữ liệu
-    var threads = $('#tbListData thead th');
-    $.each(res, function (index, obj) {
-        var tr = $(`<tr> </tr>`);
-        //Thêm cho thẻ tr 1 cái id = id của employee
-        $(tr).attr('idtr', obj["EmployeeId"]);
-        $.each(threads, function (index, th) {
-            //Lấy thông tin dữ liệu sẽ Map tương ứng với các cột 
-            var fieldName = $(th).attr('fieldName')
-            var value = obj[fieldName];
-            var formatType = $(th).attr('formatType')
-            var td = $(`<td>` + `<div title="` + value + `"></div>` + `</td>`);
-            switch (formatType) {
-                case "Gender":
-                    value = formatGender(value);
-                    break;
-                case "ddmmyyyy":
-                    value = formatDate(value);
-                    break;
-                case "PositionName":
-                    value = formatPosition(value);
-                    break;
-                case "DepartmentName":
-                    value = formatDepartment(value);
-                    break;
-                case "Money":
-                    value = formatMoney(value);
-                    td.addClass('text-align-right');
-                    break;
-                case "WorkStatusName":
-                    value = formatWorkStatus(value);
-                    break;
-                default:
-                    break;
-            }
-            if (fieldName == 'SelectedEmployee') {
-                var tagcheckbox = $(`<input type="checkbox" style="width:13px;height:13px">`);
-                $(tagcheckbox).attr('value', obj["EmployeeId"]);
-                $(td).append(tagcheckbox);
-            } else {
-                $(td).append(value);
-            }
-            $(tr).append(td);
-        })
-        $('#tbListData tbody').append(tr);
-    })
+function generateTable2() {
+
 }
 
 function showImagePreview() {

@@ -123,3 +123,99 @@ function formatWorkStatus(workStatus) {
         return "Đã nghỉ việc";
     }
 }
+
+function generateTable(res) {
+    //Lấy thông tin các cột dữ liệu
+    var threads = $('#tbListData thead th');
+    $.each(res, function (index, obj) {
+        var tr = $(`<tr> </tr>`);
+        //Thêm cho thẻ tr 1 cái id = id của employee
+        $(tr).attr('idtr', obj["EmployeeId"]);
+        $.each(threads, function (index, th) {
+            //Lấy thông tin dữ liệu sẽ Map tương ứng với các cột 
+            var fieldName = $(th).attr('fieldName')
+            var value = obj[fieldName];
+            var formatType = $(th).attr('formatType')
+            var td = $(`<td>` + `<div title="` + value + `"></div>` + `</td>`);
+            switch (formatType) {
+                case "Gender":
+                    value = formatGender(value);
+                    break;
+                case "ddmmyyyy":
+                    value = formatDate(value);
+                    break;
+                case "PositionName":
+                    value = formatPosition(value);
+                    break;
+                case "DepartmentName":
+                    value = formatDepartment(value);
+                    break;
+                case "Money":
+                    value = formatMoney(value);
+                    td.addClass('text-align-right');
+                    break;
+                case "WorkStatusName":
+                    value = formatWorkStatus(value);
+                    break;
+                default:
+                    break;
+            }
+            if (fieldName == 'SelectedEmployee') {
+                var tagcheckbox = $(`<input type="checkbox" style="width:13px;height:13px">`);
+                $(tagcheckbox).attr('value', obj["EmployeeId"]);
+                $(td).append(tagcheckbox);
+            } else {
+                $(td).append(value);
+            }
+            $(tr).append(td);
+        })
+        $('#tbListData tbody').append(tr);
+    })
+}
+
+//làm khung chọn trang dữ liệu
+function pagination(current, last) {
+    var delta = 2,
+        left = current - delta,
+        right = current + delta + 1,
+        range = [],
+        rangeDots = [],
+        l;
+    for (let i = 1; i <= last; i++) {
+        if (i == 1 || i == last || i >= left && i < right) {
+            range.push(i);
+        }
+    }
+    for (let i of range) {
+        if (l) {
+            if (i - l === 2) {
+                rangeDots.push(l + 1);
+            } else if (i - l !== 1) {
+                rangeDots.push('...');
+            }
+        }
+        rangeDots.push(i);
+        l = i;
+    }
+    return rangeDots;
+}
+
+function loadNumberOfPage() {
+    $('.m-btn-list-page').empty();
+    var rangeDots = pagination(currentPage, numberOfPage);
+    var pageNumber;
+    for (var i = 0; i < rangeDots.length; i++) {
+        if (rangeDots[i].toString() !== '...') {
+            if (currentPage == rangeDots[i]) {
+                pageNumber = `<button onclick="selectedPage(${rangeDots[i]})" class="btn-pagenumber btn-pagenumber-selected">${rangeDots[i]}</button>`;
+                $('.m-btn-list-page').append(pageNumber);
+            } else {
+                pageNumber = `<button onclick="selectedPage(${rangeDots[i]})" class="btn-pagenumber">${rangeDots[i]}</button>`;
+                $('.m-btn-list-page').append(pageNumber);
+            }
+        } else {
+            pageNumber = `<button class="btn-pagenumber">${rangeDots[i]}</button>`;
+            $('.m-btn-list-page').append(pageNumber);
+        }
+    }
+}
