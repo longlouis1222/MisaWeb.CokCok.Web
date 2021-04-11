@@ -1,5 +1,5 @@
 var employees,
-    numberOfPage = 1,
+    numberOfPage = 10,
     currentPage = 1,
     amountObj = 10;
 
@@ -21,7 +21,7 @@ $(document).ready(function () {
         modal: true
     });
     loadData();
-    // loadDataOfEmployeesPerPage();
+    loadDataOfEmployeesPerPage();
     loadNumberOfPage();
     initEvens();
     showImagePreview();
@@ -36,8 +36,8 @@ function loadData() {
     // 1. Bước 1: gọi service lấy dữ liệu: (api.manhnv.net/api/employees)
     //debugger;
     $.ajax({
-        // url: 'https://localhost:44376/api/Employees',
-        url: 'http://api.manhnv.net/api/employees',
+        url: 'https://localhost:44376/api/Employees',
+        // url: 'http://api.manhnv.net/api/employees',
         method: 'GET',
         data: null,
         dataType: 'json',
@@ -86,7 +86,6 @@ function loadDataOfEmployeesPerPage() {
         // infoPerPage = res;
         $('#tbListData tbody').empty();
         generateTable(res);
-
     }).fail(function (res) {
     })
 }
@@ -95,7 +94,6 @@ function selectedPage(obj) {
     currentPage = obj;
     loadNumberOfPage();
     loadDataOfEmployeesPerPage();
-
 }
 
 /**
@@ -114,7 +112,7 @@ function initEvens() {
     me = this;
     var notify;
     var isUpdated = false;
-    var idEmployeeSelected = 0;
+    var idEmployeeSelected = $('#idtr').val();
     // Gán các sự kiện:
     $('#btnAdd').click(function () {
         isUpdated = false;
@@ -200,6 +198,7 @@ function initEvens() {
                 warning_success.dialog('open');
                 dialog.dialog('close');
                 me.loadData();
+                me.loadDataOfEmployeesPerPage();
             }).fail(function (res) {
                 var messenger = res['responseJSON']['Messenger'];
                 alert(messenger);
@@ -221,6 +220,7 @@ function initEvens() {
                 warning_success.dialog('open');
                 dialog.dialog('close');
                 me.loadData();
+                me.loadDataOfEmployeesPerPage();
             }).fail(function (res) {
                 var messenger = res['responseJSON']['Messenger'];
                 $('#text-notify').text(messenger);
@@ -274,9 +274,9 @@ function initEvens() {
     $('#btnRefresh').click(function () {
         me.loadData();
         me.loadNumberOfPage();
-        me.loadDataOfEmployeesPerPage()
+        me.loadDataOfEmployeesPerPage();
     })
-    // Effect Selection and Delete Elements
+    // Effect Selection (change the color of the row selected) and Delete Elements
     $("#tbListData tbody").on('click', 'tr', me.theRowSelected);
 
     $('#btnDelete').click(function () {
@@ -308,6 +308,7 @@ function initEvens() {
                         warning_success.dialog('open');
                         // + Load lại dữ liệu
                         me.loadData();
+                        me.loadDataOfEmployeesPerPage();
                     }).fail(function (res) {
                         warning.dialog('close');
                         alert('Xóa thất bại !');
@@ -432,61 +433,18 @@ function btnSearchOnclick() {
     var DepartmentId = $('.filter-left #cbxDepartment option:selected').val();
     var PositionId = $('.filter-left #cbxPosition option:selected').val();
     console.log(inputSearch);
-    console.log(DepartmentId);
     console.log(PositionId);
+    console.log(DepartmentId);
     $('#tbListData tbody').empty();
-    var startRecord = (currentPage - 1) * amountObj;
-    var endRecord = (currentPage - 1) * amountObj - amountObj;
+    // var startRecord = (currentPage - 1) * amountObj;
+    // var endRecord = (currentPage - 1) * amountObj - amountObj;
     $.ajax({
-        url: 'https://localhost:44376/api/Employees/search?ContainInfo=' + inputSearch + '&DepartmentId=' + DepartmentId + '&PositionId=' + PositionId,
+        url: 'https://localhost:44376/api/Employees/search?ContainInfo=' + inputSearch + '&PositionId=' + PositionId + '&DepartmentId=' + DepartmentId,
         method: 'GET',
         dataType: 'json',
         contentType: 'application/json'
     }).done(function (res) {
-        for (var i = startRecord; i < res.length && i <= endRecord; i++) {
-            var tr = $(`<tr> </tr>`);
-            //Thêm cho thẻ tr 1 cái id = id của employee
-            $(tr).attr('idtr', obj["EmployeeId"]);
-            $.each(threads, function (index, th) {
-                //Lấy thông tin dữ liệu sẽ Map tương ứng với các cột 
-                var fieldName = $(th).attr('fieldName')
-                var value = obj[fieldName];
-                var formatType = $(th).attr('formatType')
-                var td = $(`<td>` + `<div title="` + value + `"></div>` + `</td>`);
-                switch (formatType) {
-                    case "Gender":
-                        value = formatGender(value);
-                        break;
-                    case "ddmmyyyy":
-                        value = formatDate(value);
-                        break;
-                    case "PositionName":
-                        value = formatPosition(value);
-                        break;
-                    case "DepartmentName":
-                        value = formatDepartment(value);
-                        break;
-                    case "Money":
-                        value = formatMoney(value);
-                        td.addClass('text-align-right');
-                        break;
-                    case "WorkStatusName":
-                        value = formatWorkStatus(value);
-                        break;
-                    default:
-                        break;
-                }
-                if (fieldName == 'SelectedEmployee') {
-                    var tagcheckbox = $(`<input type="checkbox" style="width:13px;height:13px">`);
-                    $(tagcheckbox).attr('value', obj["EmployeeId"]);
-                    $(td).append(tagcheckbox);
-                } else {
-                    $(td).append(value);
-                }
-                $(tr).append(td);
-            })
-            $('#tbListData tbody').append(tr);
-        }
+        generateTable(res);
         var count = $('#tbListData tbody tr');
         if (count.length == 0) {
             notify = 'Không tìm thấy thông tin nhân viên này trong hệ thống !!!';
@@ -496,10 +454,6 @@ function btnSearchOnclick() {
     }).fail(function (res) {
         alert('Tìm kiến thất bại !');
     })
-}
-
-function generateTable2() {
-
 }
 
 function showImagePreview() {
