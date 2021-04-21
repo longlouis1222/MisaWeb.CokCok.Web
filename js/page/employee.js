@@ -47,7 +47,7 @@ function loadData() {
         //    debugger;
         // 2. Bước 2: xử lý dữ liệu
         employees = res;
-        numberOfPage = Math.ceil(res.length / amountObj);
+        numberOfPage = Math.ceil(employees.length / amountObj);
         // 3. Bước 3: Build html và append lên UI:
 
         // for (var i = 0; i < res.length; i++) {
@@ -90,12 +90,6 @@ function loadDataOfEmployeesPerPage() {
     })
 }
 
-function selectedPage(obj) {
-    currentPage = obj;
-    loadNumberOfPage();
-    loadDataOfEmployeesPerPage();
-}
-
 /**
  * Hiệu ứng đổi màu cho Element vừa Select
  * Author: NHLONG (07/12/2020)
@@ -114,6 +108,15 @@ function initEvens() {
     var isUpdated = false;
     var idEmployeeSelected = $('#idtr').val();
     // Gán các sự kiện:
+    $('#cbxPosition').on('change', function () {
+        // loadData();
+        loadDataBetweenPositionAndDepartment();
+    });
+    $('#cbxDepartment').on('change', function () {
+        // loadData();
+        loadDataBetweenPositionAndDepartment();
+    });
+
     $('#btnAdd').click(function () {
         isUpdated = false;
         ResetDialog();
@@ -272,6 +275,8 @@ function initEvens() {
 
     // Refresh Data
     $('#btnRefresh').click(function () {
+        currentPage = 1;
+        me.resetPositonAndDepartment();
         me.loadData();
         me.loadNumberOfPage();
         me.loadDataOfEmployeesPerPage();
@@ -346,6 +351,26 @@ function initEvens() {
         selectedPage(numberOfPage);
     });
 }
+
+// function filterWithPositionId() {
+//     var opt = $('#cbxPosition').find(':selected').val();
+//     console.log(opt);
+//     $.ajax({
+//         url: 'https://localhost:44376/api/Employees/filter?positionId=' + opt,
+//         method: 'GET',
+//         async: false,
+//         dataType: 'json',
+//         connectType: 'application/json'
+//     }).done(function (res) {
+//         console.log(res);
+//         $('#tbListData tbody').empty();
+//         numberOfPage = Math.ceil(res.length / amountObj);
+//         generateTable(res);
+//     }).fail(function (res) {
+//         alert('Tìm kiến thất bại !');
+//     })
+// }
+
 function ResetDialog() {
     $('#em-code').val('');
     $('#em-name').val('');
@@ -390,61 +415,60 @@ function LoadEmployeeCode() {
     })
 }
 
-function searchDerpartment() {
-    $.ajax({
-        url: 'https://localhost:44376/api/EmployeeDepartments',
-        method: 'GET',
-        async: false,
-        dataType: 'json',
-        connectType: 'application/json'
-    }).done(function (res) {
-        console.log(res);
-        $.each(res, function (index, item) {
-            var option = $(`<option value=` + item['DepartmentId'] + `>` + item['DepartmentName'] + `</option>`);
-            $('#cbxDepartment').append(option);
-        })
-    }).fail(function (res) {
-        alert('Tìm kiến thất bại !');
-    })
-}
+// function searchDerpartment() {
+//     $.ajax({
+//         url: 'https://localhost:44376/api/EmployeeDepartments',
+//         method: 'GET',
+//         async: false,
+//         dataType: 'json',
+//         connectType: 'application/json'
+//     }).done(function (res) {
+//         console.log(res);
+//         $.each(res, function (index, item) {
+//             var option = $(`<option value=` + item['DepartmentId'] + `>` + item['DepartmentName'] + `</option>`);
+//             $('#cbxDepartment').append(option);
+//         })
+//     }).fail(function (res) {
+//         alert('Tìm kiến thất bại !');
+//     })
+// }
 
-function searchPosition() {
+// function searchPosition() {
 
-    $.ajax({
-        url: 'https://localhost:44376/api/EmployeePositions',
-        method: 'GET',
-        async: false,
-        dataType: 'json',
-        connectType: 'application/json'
-    }).done(function (res) {
-        console.log(res);
-        $.each(res, function (index, item) {
-            var option = $(`<option value=` + item['PositionId'] + `>` + item['PositionName'] + `</option>`);
-            $('#cbxPosition').append(option);
-        })
-    }).fail(function (res) {
-        alert('Tìm kiến thất bại !');
-    })
+//     $.ajax({
+//         url: 'https://localhost:44376/api/EmployeePositions',
+//         method: 'GET',
+//         async: false,
+//         dataType: 'json',
+//         connectType: 'application/json'
+//     }).done(function (res) {
+//         console.log(res);
+//         $.each(res, function (index, item) {
+//             var option = $(`<option value=` + item['PositionId'] + `>` + item['PositionName'] + `</option>`);
+//             $('#cbxPosition').append(option);
+//         })
+//     }).fail(function (res) {
+//         alert('Tìm kiến thất bại !');
+//     })
 
-}
+// }
 
 function btnSearchOnclick() {
     var inputSearch = $('#inputTxt').val();
-    var DepartmentId = $('.filter-left #cbxDepartment option:selected').val();
-    var PositionId = $('.filter-left #cbxPosition option:selected').val();
     console.log(inputSearch);
-    console.log(PositionId);
-    console.log(DepartmentId);
     $('#tbListData tbody').empty();
-    // var startRecord = (currentPage - 1) * amountObj;
-    // var endRecord = (currentPage - 1) * amountObj - amountObj;
     $.ajax({
-        url: 'https://localhost:44376/api/Employees/search?ContainInfo=' + inputSearch + '&PositionId=' + PositionId + '&DepartmentId=' + DepartmentId,
+        url: 'https://localhost:44376/api/Employees/filter?ContainInfo=' + inputSearch,
         method: 'GET',
         dataType: 'json',
         contentType: 'application/json'
     }).done(function (res) {
-        generateTable(res);
+        employees = res;
+        $('#tbListData tbody').empty();
+        currentPage = 1;
+        numberOfPage = Math.ceil(employees.length / amountObj);
+        loadNumberOfPage();
+        generateTableWithAmount();
         var count = $('#tbListData tbody tr');
         if (count.length == 0) {
             notify = 'Không tìm thấy thông tin nhân viên này trong hệ thống !!!';
@@ -454,6 +478,148 @@ function btnSearchOnclick() {
     }).fail(function (res) {
         alert('Tìm kiến thất bại !');
     })
+}
+function resetPositonAndDepartment() {
+    $('#cbxPosition').val('');
+    $('#cbxDepartment').val('');
+}
+
+function loadDataBetweenPositionAndDepartment() {
+    // var positionSelected = $('#cbxPosition').val();
+    // var departmentSelected = $('#cbxDepartment').val();
+    // var employeesCur = [];
+    // if (positionSelected !== '' && departmentSelected !== '') {
+    //     for (var i = 0; i < employees.length; i++) {
+    //         if (employees[i].PositionId === positionSelected && employees[i].DepartmentId === departmentSelected) {
+    //             employeesCur.push(employees[i]);
+    //         }
+    //     }
+    //     employees = employeesCur;
+    //     currentPage = 1;
+    //     numberOfPage = Math.ceil(employees.length / amountObj);
+    //     loadNumberOfPage();
+    // } else if (positionSelected === '' && departmentSelected !== '') {
+    //     for (var i = 0; i < employees.length; i++) {
+    //         if (employees[i].DepartmentId === departmentSelected) {
+    //             employeesCur.push(employees[i]);
+    //         }
+    //     }
+    //     employees = employeesCur;
+    //     currentPage = 1;
+    //     numberOfPage = Math.ceil(employees.length / amountObj);
+    //     loadNumberOfPage();
+    // } else if (positionSelected !== '' && departmentSelected === '') {
+    //     for (var i = 0; i < employees.length; i++) {
+    //         if (employees[i].PositionId === positionSelected) {
+    //             employeesCur.push(employees[i]);
+    //         }
+    //     }
+    //     employees = employeesCur;
+    //     currentPage = 1;
+    //     numberOfPage = Math.ceil(employees.length / amountObj);
+    //     loadNumberOfPage();
+    // } else {
+    //     currentPage = 1;
+    //     loadData();
+    //     loadDataOfEmployeesPerPage();
+    //     loadNumberOfPage();
+    // }
+    // loadNumberOfPage();
+    // console.log(employees);
+    // $('#tbListData tbody').empty();
+    // for (var i = 0; i < employees.length && i < amountObj; i++) {
+    //     var DOB = formatDate(employees[i].DateOfBirth);
+    //     var Salary = formatMoney(employees[i].Salary);
+    //     var GenderName = formatGender(employees[i].Gender);
+    //     var DepartmentName = formatDepartment(employees[i].DepartmentId);
+    //     var PositionName = formatPosition(employees[i].PositionId);
+    //     var WorkStatusName = formatWorkStatus(employees[i].WorkStatus);
+    //     var trHtml = $(`<tr class="el-table__row first" idtr="${employees[i].EmployeeId}">
+    //                         <td rowspan="1" colspan="1"><div class="cell" style="padding-top: 3px"><input value="${employees[i].EmployeeId}" type="checkbox" style="width: 13px;height: 13px;"></div></td>
+    //                         <td rowspan="1" colspan="1" style="width: 100px;"><div class="cell">${employees[i].EmployeeCode}</div></td>
+    //                         <td rowspan="1" colspan="1" style="width: 143px;"><div class="cell">${employees[i].FullName}</div></td>
+    //                         <td rowspan="1" colspan="1" style="width: 58px;"><div class="cell">${/* res[i]. */GenderName || ""}</div></td>
+    //                         <td rowspan="1" colspan="1" style="width: 100px;"><div class="cell text-align-center">${DOB}</div></td>
+    //                         <td rowspan="1" colspan="1" style="width: 119px;"><div class="cell">${employees[i].PhoneNumber}</div></td>
+    //                         <td rowspan="1" colspan="1" style="width: 192px;"><div class="cell" title="${employees[i].Email}">${employees[i].Email}</div></td>
+    //                         <td rowspan="1" colspan="1" style="width: 72px;"><div class="cell">${/* res[i]. */PositionName || ""}</div></td>
+    //                         <td rowspan="1" colspan="1" style="width: 232px;"><div class="cell">${/* res[i]. */DepartmentName || ""}</div></td>
+    //                         <td rowspan="1" colspan="1" style="width: 55px;"><div class="cell text-align-right">${/* res[i]. */Salary || ""}</div></td>
+    //                         <td rowspan="1" colspan="1" style="width: 98px;"><div class="cell">${/* res[i]. */WorkStatusName || ""}</div></td>
+    //                         <td rowspan="1" colspan="1" style="width: 32px;"><div class="cell"></div></td>
+    //                     </tr>`);
+    //     $('#tbListData >tbody:last-child').append(trHtml);
+    // }
+    var positionSelected = $('#cbxPosition').val();
+    var departmentSelected = $('#cbxDepartment').val();
+    var urlFilter;
+    if (positionSelected !== '' && departmentSelected !== '') {
+        urlFilter = 'https://localhost:44376/api/Employees/search?PositionInfo=' + positionSelected + '&DepartmentInfo=' + departmentSelected;
+    } else if (positionSelected !== '' && departmentSelected === '') {
+        urlFilter = 'https://localhost:44376/api/Employees/search?PositionInfo=' + positionSelected;
+    } else {
+        urlFilter = 'https://localhost:44376/api/Employees/search?DepartmentInfo=' + departmentSelected;
+    }
+    $.ajax({
+        url: urlFilter,
+        method: 'GET',
+        dataType: 'json',
+        contentType: 'application/json'
+    }).done(function (res) {
+        employees = res;
+        $('#tbListData tbody').empty();
+        currentPage = 1;
+        numberOfPage = Math.ceil(employees.length / amountObj);
+        loadNumberOfPage();
+        generateTableWithAmount();
+        var count = $('#tbListData tbody tr');
+        if (count.length == 0) {
+            notify = 'Không tìm thấy thông tin nhân viên này trong hệ thống !!!';
+            $('#text-notify').text(notify);
+            warning_success.dialog('open');
+        }
+    }).fail(function (res) {
+        alert('Tìm kiến thất bại !');
+    })
+}
+
+function selectedPage(obj) {
+    currentPage = obj;
+    loadNumberOfPage();
+    if ($('#cbxPosition').val() === '' && $('#cbxDepartment').val() === '') {
+        loadDataOfEmployeesPerPage();
+    } else {
+        generateTableWithAmount();
+    }
+}
+
+function generateTableWithAmount() {
+    $('#tbListData tbody').empty();
+    var startLastRecord = (currentPage - 1) * amountObj;
+    var lastRecord = (currentPage - 1) * amountObj + amountObj - 1;
+    for (var i = startLastRecord; i < employees.length && i <= lastRecord; i++) {
+        var DOB = formatDate(employees[i].DateOfBirth);
+        var Salary = formatMoney(employees[i].Salary);
+        var GenderName = formatGender(employees[i].Gender);
+        var DepartmentName = formatDepartment(employees[i].DepartmentId);
+        var PositionName = formatPosition(employees[i].PositionId);
+        var WorkStatusName = formatWorkStatus(employees[i].WorkStatus);
+        var trHtml = $(`<tr class="el-table__row first" idtr="${employees[i].EmployeeId}">
+                            <td rowspan="1" colspan="1"><div class="cell" style="padding-top: 3px"><input value="${employees[i].EmployeeId}" type="checkbox" style="width: 13px;height: 13px;"></div></td>
+                            <td rowspan="1" colspan="1" style="width: 100px;"><div class="cell">${employees[i].EmployeeCode}</div></td>
+                            <td rowspan="1" colspan="1" style="width: 143px;"><div class="cell">${employees[i].FullName}</div></td>
+                            <td rowspan="1" colspan="1" style="width: 58px;"><div class="cell">${/* res[i]. */GenderName || ""}</div></td>
+                            <td rowspan="1" colspan="1" style="width: 100px;"><div class="cell text-align-center">${DOB}</div></td>
+                            <td rowspan="1" colspan="1" style="width: 119px;"><div class="cell">${employees[i].PhoneNumber}</div></td>
+                            <td rowspan="1" colspan="1" style="width: 192px;"><div class="cell" title="${employees[i].Email}">${employees[i].Email}</div></td>
+                            <td rowspan="1" colspan="1" style="width: 72px;"><div class="cell">${/* res[i]. */PositionName || ""}</div></td>
+                            <td rowspan="1" colspan="1" style="width: 55px;"><div class="cell">${/* res[i]. */DepartmentName || ""}</div></td>
+                            <td rowspan="1" colspan="1" style="width: 232px;"><div class="cell text-align-right">${/* res[i]. */Salary || ""}</div></td>
+                            <td rowspan="1" colspan="1" style="width: 98px;"><div class="cell">${/* res[i]. */WorkStatusName || ""}</div></td>
+                            <td rowspan="1" colspan="1" style="width: 32px;"><div class="cell"></div></td>
+                        </tr>`);
+        $('#tbListData >tbody:last-child').append(trHtml);
+    }
 }
 
 function showImagePreview() {
