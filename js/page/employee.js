@@ -458,7 +458,7 @@ function btnSearchOnclick() {
     console.log(inputSearch);
     $('#tbListData tbody').empty();
     $.ajax({
-        url: 'https://localhost:44376/api/Employees/filter?ContainInfo=' + inputSearch,
+        url: 'https://localhost:44376/api/Employees/search?ContainInfo=' + inputSearch,
         method: 'GET',
         dataType: 'json',
         contentType: 'application/json'
@@ -554,11 +554,11 @@ function loadDataBetweenPositionAndDepartment() {
     var departmentSelected = $('#cbxDepartment').val();
     var urlFilter;
     if (positionSelected !== '' && departmentSelected !== '') {
-        urlFilter = 'https://localhost:44376/api/Employees/search?PositionInfo=' + positionSelected + '&DepartmentInfo=' + departmentSelected;
+        urlFilter = 'https://localhost:44376/api/Employees/filter?PositionInfo=' + positionSelected + '&DepartmentInfo=' + departmentSelected;
     } else if (positionSelected !== '' && departmentSelected === '') {
-        urlFilter = 'https://localhost:44376/api/Employees/search?PositionInfo=' + positionSelected;
+        urlFilter = 'https://localhost:44376/api/Employees/filter?PositionInfo=' + positionSelected;
     } else {
-        urlFilter = 'https://localhost:44376/api/Employees/search?DepartmentInfo=' + departmentSelected;
+        urlFilter = 'https://localhost:44376/api/Employees/filter?DepartmentInfo=' + departmentSelected;
     }
     $.ajax({
         url: urlFilter,
